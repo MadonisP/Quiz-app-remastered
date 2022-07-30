@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import FeaturesItem from './FeaturesItem';
+import {features} from '../Data'
 
 const Container = styled.div`
     display:flex;
@@ -9,7 +11,7 @@ const Container = styled.div`
 const Features = () => {
   return (
     <Container>
-        {Features.map((item)=>(
+        {features.map((item)=>(
             <FeaturesItem item={item} key={item.id}/>
         ))}
     </Container>
