@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ArrowRightAlt, KeyboardDoubleArrowRight } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
 width:100%;
@@ -88,7 +88,9 @@ const Hero = () => {
                         Create, send and analyze your tests, quizzes and assessments for free with OEM
                         </Description>
                         <Button>
+                            <Link to="/register" style={{ textDecoration: "none", color:"#EEEEEE"}}>
                             Get Started for Free  &gt;&gt;
+                            </Link>
                         </Button>
                     </InfoContainer>
                     <ImgContainer>

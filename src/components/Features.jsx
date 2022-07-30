@@ -1,86 +1,18 @@
-import React from 'react'
+import styled from 'styled-components'
+
+const Container = styled.div`
+    display:flex;
+    padding:20px;
+    justify-content:space-between;
+`;
 
 const Features = () => {
   return (
-    <div>
-        Features
-        asd
-        
-        sadasdz
-        <br/>
-        sad
-        sadasdz
-        <br/>
-        sad
-        sadasdz
-        <br/>
-        sad
-        sadasdz
-        <br/>
-        sad
-
-        sadasdz
-        <br/>
-        sad
-        sadasdz
-        <br/>
-        sad
-        sadasdz
-        <br/>
-        sad
-
-        sadasdz
-        <br/>
-        sad
-        sadasdz
-        <br/>
-        sad
-
-        sadasdz
-        <br/>
-        sad
-
-        sadasdz
-        <br/>
-        sad
-
-         sadasdz
-        <br/>
-        sad
-        sadasdz
-        <br/>
-        sad
-
-        sadasdz
-        <br/>
-        sad
-
-        sadasdz
-        <br/>
-        sad
-
-        sadasdz
-        <br/>
-        sad
-        sadasdz
-        <br/>
-        sad
-
-        sadasdz
-        <br/>
-        sad
-        sadasdz
-        <br/>
-        sad
-
-         sadasdz
-        <br/>
-        sad
-        sadasdz
-        <br/>
-        sad
-        
-        </div>
+    <Container>
+        {Features.map((item)=>(
+            <FeaturesItem item={item} key={item.id}/>
+        ))}
+    </Container>
   )
 }
 
