@@ -2,7 +2,85 @@ import React from 'react'
 
 const Features = () => {
   return (
-    <div>Features</div>
+    <div>
+        Features
+        asd
+        
+        sadasdz
+        <br/>
+        sad
+        sadasdz
+        <br/>
+        sad
+        sadasdz
+        <br/>
+        sad
+        sadasdz
+        <br/>
+        sad
+
+        sadasdz
+        <br/>
+        sad
+        sadasdz
+        <br/>
+        sad
+        sadasdz
+        <br/>
+        sad
+
+        sadasdz
+        <br/>
+        sad
+        sadasdz
+        <br/>
+        sad
+
+        sadasdz
+        <br/>
+        sad
+
+        sadasdz
+        <br/>
+        sad
+
+         sadasdz
+        <br/>
+        sad
+        sadasdz
+        <br/>
+        sad
+
+        sadasdz
+        <br/>
+        sad
+
+        sadasdz
+        <br/>
+        sad
+
+        sadasdz
+        <br/>
+        sad
+        sadasdz
+        <br/>
+        sad
+
+        sadasdz
+        <br/>
+        sad
+        sadasdz
+        <br/>
+        sad
+
+         sadasdz
+        <br/>
+        sad
+        sadasdz
+        <br/>
+        sad
+        
+        </div>
   )
 }
 
