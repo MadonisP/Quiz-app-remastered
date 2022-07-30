@@ -1,6 +1,4 @@
 import styled from 'styled-components'
-import { Send } from "@mui/icons-material";
-import { Link } from 'react-router-dom';
 
 const Container =styled.div`
    flex:1;
