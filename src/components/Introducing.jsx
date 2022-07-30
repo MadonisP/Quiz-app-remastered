@@ -1,4 +1,4 @@
-import { Public } from '@mui/icons-material'
+import { AccessTime, Check, FlashOn, Lock, Public, Recommend } from '@mui/icons-material'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -59,14 +59,14 @@ const Introducing = () => {
                 </Section>
                 <Section>
                     <Info>
-                        <Image><Public /></Image>
+                        <Image><Lock /></Image>
                         <Title>Access anywhere</Title>
                         <Description>Being online allows you and your respondents to access, administer and take your quizzes from anywhere at anytime.</Description>
                     </Info>
                 </Section>
                 <Section>
                     <Info>
-                        <Image><Public /></Image>
+                        <Image><Check /></Image>
                         <Title>Access anywhere</Title>
                         <Description>Being online allows you and your respondents to access, administer and take your quizzes from anywhere at anytime.</Description>
                     </Info>
@@ -75,22 +75,22 @@ const Introducing = () => {
             <Container>
                 <Section>
                     <Info>
-                        <Image><Public /></Image>
+                        <Image><AccessTime /></Image>
                         <Title>Access anywhere</Title>
                         <Description>Being online allows you and your respondents to access, administer and take your quizzes from anywhere at anytime.</Description>
                     </Info>
                 </Section>
                 <Section>
                     <Info>
-                        <Image><Public /></Image>
+                        <Image><FlashOn /></Image>
                         <Title>Access anywhere</Title>
                         <Description>Being online allows you and your respondents to access, administer and take your quizzes from anywhere at anytime.</Description>
                     </Info>
                 </Section>
                 <Section>
                     <Info>
-                        <Image><Public /></Image>
-                        <Title>Access anywhere</Title>
+                        <Image><Recommend /></Image>
+                        <Title>7/24 live support</Title>
                         <Description>Being online allows you and your respondents to access, administer and take your quizzes from anywhere at anytime.</Description>
                     </Info>
                 </Section>
