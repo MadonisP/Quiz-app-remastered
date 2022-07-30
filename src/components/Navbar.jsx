@@ -20,11 +20,19 @@ align-items: center;
 `
 
 const Logo = styled.div`
-
+font-family: 'Square Peg', cursive;
+font-size:32px;
+font-weight:600;
+cursor:pointer;
+color:#00ADB5;
+margin-left:10%;
 `
 
 const MenuItem = styled.div`
-
+font-size: 14px;
+cursor: pointer;
+margin-left: 25px;
+color:#EEEEEE;
 `
 
 const Right = styled.div`
