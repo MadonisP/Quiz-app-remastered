@@ -1,10 +1,13 @@
-import React from 'react'
-import Navbar from '../components/Navbar'
+
+import styled from 'styled-components'
+import Features from '../components/Features'
+import Hero from '../components/Hero'
 
 const Home = () => {
   return (
     <div>
-        home
+      <Hero />
+      <Features />
     </div>
   )
 }
