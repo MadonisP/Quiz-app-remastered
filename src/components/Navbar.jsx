@@ -1,15 +1,7 @@
 import React from 'react'
-import styled, { keyframes, css } from 'styled-components'
+import styled  from 'styled-components'
 import { Link } from "react-router-dom";
 
-const pulse = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
 
 const Container = styled.div`
 height:60px;
@@ -49,9 +41,6 @@ border:none;
 &:hover {
     background-color: #222831;
   }
-&:active{
-    background-color: #222831;
-}
 `
 
 const Right = styled.div`
@@ -62,6 +51,7 @@ justify-content:flex-end;
 `
 
 const MenuItemFirst = styled.div`
+width:55px;
 margin-right:10%;
 margin-left:25px;
 cursor: pointer;
@@ -95,15 +85,17 @@ const Navbar = () => {
             <Wrapper>
                 <Left>
                     <Logo>OEM</Logo>{/*online exam maker*/}
-                    <MenuItem animationLength="2s" active>Home</MenuItem>
-                    <MenuItem animationLength="2s" active>Features</MenuItem>
-                    <MenuItem animationLength="2s" active>Help</MenuItem>
+                    <Link to="/">
+                        <MenuItem>Home</MenuItem>
+                    </Link>
+                    <MenuItem>Features</MenuItem>
+                    <MenuItem>Help</MenuItem>
                 </Left>
                 <Right>
-                    <Link to="/login">
+                    <Link to="/login" style={{ textDecoration: "none" }}>
                         <MenuItemSecond>Login</MenuItemSecond>
                     </Link>
-                    <Link to="/register">
+                    <Link to="/register" style={{ textDecoration: "none", marginRight: "10%" }}>
                         <MenuItemFirst>Sign up</MenuItemFirst>
                     </Link>
                 </Right>
