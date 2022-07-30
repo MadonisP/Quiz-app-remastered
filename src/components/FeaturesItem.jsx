@@ -23,13 +23,13 @@ const Info =styled.div`
     align-items:center;
 `
 const Title =styled.h1`
-    color:black;
+color:#393E46;
     margin-bottom:20px;
 `;
 
 const Description = styled.div`
 text-align:center;
-color:#222831;
+color:#393E46;
 `
 
 const FeaturesItem = ({item}) => {
