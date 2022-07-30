@@ -12,12 +12,9 @@ const Section = styled.div`
    height:60vh;
 `
 const Image = styled.div`
-margin-left:88px;
+margin-left:22%;
 width:40%;
 height:40%;
-border:1px solid white;
-border-radius:50%;
-object-fit:cover;
 `
 const Info = styled.div`
     margin-top:-100px;
@@ -39,7 +36,7 @@ color:#393E46;
 `
 
 const WhoUsesTitle = styled.div`
-font-size:64px;
+font-size:42px;
 font-weight:200;
 text-align:center;
 color:#393E46;
