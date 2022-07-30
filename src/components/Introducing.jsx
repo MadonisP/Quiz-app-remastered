@@ -42,7 +42,7 @@ height:20vh;
 `
 
 const AllItems = styled.div`
-color:#393E46;
+background-color:#e8e8e8;
 `
 
 const Introducing = () => {
