@@ -29,42 +29,75 @@ const Container = styled.table`
     text-align: center;
     border-radius:8px;
     overflow: hidden;
+    background-color:#EEEEEE;
 `;
+
+const Wrapper = styled.div`
+width:90%;
+margin:5%;
+`
+
+const Button = styled.button`
+background-color:#EEEEEE;
+color:#393E46;
+border:none;
+border-radius:15px;
+font-size:14px;
+cursor: pointer;
+`
+
+const CreateButton= styled.button`
+font-size:26px;
+font-weight:600;
+margin-bottom:3%;
+padding: 15px 25px;
+border:none;
+border-radius:10px;
+background-color:#00ADB5;
+color:#EEEEEE;
+cursor: pointer;
+&:hover {
+  background-color: #55B4BA;
+}
+`
 
 const Dashboard = () => {
   return (
     <>
       <LoginNavbar />
       <Container>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow style={{ backgroundColor: "whitesmoke" }}>
-                <TableCell>Quizzes</TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow
-                  key={row.name}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell align="right"><button><BarChart/>Analyze</button></TableCell>
-                  <TableCell align="right"><button><Visibility/>Preview</button></TableCell>
-                  <TableCell align="right"><button><Edit/>Edit</button></TableCell>
-                  <TableCell align="right"><button><Delete/>Delete</button></TableCell>
+        <Wrapper>
+          <CreateButton>Create Quiz</CreateButton>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow style={{ backgroundColor: "whitesmoke" }}>
+                  <TableCell>Quizzes</TableCell>
+                  <TableCell align="right"></TableCell>
+                  <TableCell align="right"></TableCell>
+                  <TableCell align="right"></TableCell>
+                  <TableCell align="right"></TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow
+                    key={row.name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.name}
+                    </TableCell>
+                    <TableCell align="right"><Button><BarChart style={{verticalAlign:"middle", padding:"5px"}}/>Analyze</Button></TableCell>
+                    <TableCell align="right"><Button><Visibility style={{verticalAlign:"middle", padding:"5px"}}/>Preview</Button></TableCell>
+                    <TableCell align="right"><Button><Edit style={{verticalAlign:"middle", padding:"5px"}}/>Edit</Button></TableCell>
+                    <TableCell align="right"><Button><Delete style={{verticalAlign:"middle", padding:"5px"}}/>Delete</Button></TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Wrapper>
       </Container>
       <Footer />
     </>
