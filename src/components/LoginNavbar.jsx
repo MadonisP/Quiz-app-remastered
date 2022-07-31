@@ -76,7 +76,7 @@ const LoginNavbar = () => {
             <Wrapper>
                 <Left>
                     <Logo>OEM</Logo>{/*online exam maker*/}
-                    <Link to="/deneme">
+                    <Link to="/dashboard">
                         <MenuItem>Dashboard</MenuItem>
                     </Link>
                     <MenuItem>Users</MenuItem>
