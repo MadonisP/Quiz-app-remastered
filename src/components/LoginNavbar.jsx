@@ -52,25 +52,20 @@ justify-content:flex-end;
 const MenuItemFirst = styled.div`
 width:80px;
 margin-right:10%;
-margin-left:25px;
 cursor: pointer;
 color:#B5B5B6;
-padding:10px 20px;
+padding:10px;
 &:hover {
     color: #EEEEEE;
   }
 `
 
 const MenuItemSecond = styled.div`
-margin-left:25px;
 cursor: pointer;
-border:none;
-background-color:#0275d8;
-color:#EEEEEE;
-padding:10px 20px;
-border-radius:5px;
+color:#B5B5B6;
+padding:10px;
 &:hover {
-    background-color: #228CE9;
+    color: #EEEEEE;
   }
 `
 
