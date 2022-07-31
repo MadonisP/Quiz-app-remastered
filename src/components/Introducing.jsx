@@ -32,11 +32,13 @@ color:#393E46;
 margin-bottom:10px;
 `
 const Description = styled.div`
+flex:1;
 text-align:center;
 color:#393E46;
 `
 
 const Section = styled.div`
+flex:1;
 margin:10px 30px 0px 25px;
 height:20vh;
 `
@@ -60,15 +62,15 @@ const Introducing = () => {
                 <Section>
                     <Info>
                         <Image><Lock /></Image>
-                        <Title>Access anywhere</Title>
-                        <Description>Being online allows you and your respondents to access, administer and take your quizzes from anywhere at anytime.</Description>
+                        <Title>Secured with SSL</Title>
+                        <Description>With SSL encryption and utilising our advanced cloud infrastructure you can be sure your tests will always be secure.</Description>
                     </Info>
                 </Section>
                 <Section>
                     <Info>
                         <Image><Check /></Image>
-                        <Title>Access anywhere</Title>
-                        <Description>Being online allows you and your respondents to access, administer and take your quizzes from anywhere at anytime.</Description>
+                        <Title>Auto-grading</Title>
+                        <Description>OEM can automatically grade your assessments, saving you the time.</Description>
                     </Info>
                 </Section>
             </Container>
@@ -76,15 +78,15 @@ const Introducing = () => {
                 <Section>
                     <Info>
                         <Image><AccessTime /></Image>
-                        <Title>Access anywhere</Title>
-                        <Description>Being online allows you and your respondents to access, administer and take your quizzes from anywhere at anytime.</Description>
+                        <Title>Timed tests</Title>
+                        <Description>With OEM it is easy to set a time limit.</Description>
                     </Info>
                 </Section>
                 <Section>
                     <Info>
                         <Image><FlashOn /></Image>
-                        <Title>Access anywhere</Title>
-                        <Description>Being online allows you and your respondents to access, administer and take your quizzes from anywhere at anytime.</Description>
+                        <Title>Custom Tests</Title>
+                        <Description>With OEM you can customize your tests easily</Description>
                     </Info>
                 </Section>
                 <Section>
