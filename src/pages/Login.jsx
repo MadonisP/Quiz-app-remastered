@@ -3,12 +3,13 @@ import Footer from '../components/Footer';
 import styled from 'styled-components'
 
 const Container = styled.div`
-width:100vw;
+width:100%;
 height:80vh;
 display: flex;
 align-items: center;
 justify-content: center;
 background-color:whitesmoke;
+overflow:hidden;
 `
 const Wrapper = styled.div`
 width:60%;
@@ -55,6 +56,12 @@ justify-content:center;
 flex-wrap: wrap;
 boder:1px solid black
 `
+const Link = styled.a`
+margin: 20px 0px;
+font-size:15px;
+text-decoration:underline;
+cursor:pointer;
+`;
 
 const Login = () => {
   return (
@@ -68,6 +75,7 @@ const Login = () => {
               <Input placeholder="Email" required/>
               <Input placeholder="Password" required/>
               <Button>Login</Button>
+              <Link href="/register">Create a new account</Link>
             </Form>
           </FormWrapper>
         </Wrapper>
