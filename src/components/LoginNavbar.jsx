@@ -79,7 +79,6 @@ const LoginNavbar = () => {
                     <Link to="/dashboard">
                         <MenuItem>Dashboard</MenuItem>
                     </Link>
-                    <MenuItem>Users</MenuItem>
                     <MenuItem>Reports</MenuItem>
                 </Left>
                 <Right>

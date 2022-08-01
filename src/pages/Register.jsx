@@ -1,19 +1,22 @@
 import Navbar from "../components/Navbar";
 import Footer from '../components/Footer';
 import styled from 'styled-components'
+import {createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { auth,db } from '../FirebaseConfig'
+import { useState } from "react";
 
 const Container = styled.div`
 width:100vw;
 height:80vh;
 display: flex;
-align-items: center;
+align-items:center;
 justify-content: center;
 background-color:whitesmoke;
 `
 const Wrapper = styled.div`
-width:60%;
-height:100%;        
-padding:20 px; 
+width:60%;     
+padding:20px; 
 align-items: center;
 justify-content: center;
 background-color:#EEEEEE;
@@ -60,7 +63,32 @@ flex-wrap: wrap;
 boder:1px solid black
 `
 
+
 const Register = () => {
+
+  const [email, setEmail] = useState();
+  const [name, setName] = useState();
+  const [lastName, setLastName] = useState();
+  const [pass, setPass] = useState();
+
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, pass);//google encrypts password so we not need to do it
+      await setDoc(doc(db, "users", res.user.uid), {
+        id: res.user.uid,
+        first: name,
+        last: lastName,
+        email: email,
+        timeStamp: serverTimestamp(),
+      });
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
+
+
   return (
     <>
       <Navbar />
@@ -69,12 +97,12 @@ const Register = () => {
           <HeroTitle>Sign up to OEM for free</HeroTitle>
           <Title>Register to create and manage online tests, quizzes and assessments with OEM.</Title>
           <FormWrapper>
-            <Form>
-              <Input placeholder="Email (username)" />
-              <Input placeholder="First Name" />
-              <Input placeholder="Last Name" />
-              <Input placeholder="Password" />
-              <Button>Register for free</Button>
+            <Form action={handleRegister}>
+              <Input placeholder="Email (username)" type="email" onChange={e=> setEmail(e.target.value)} required/>
+              <Input placeholder="First Name" type="text" onChange={e=> setName(e.target.value)} required/>
+              <Input placeholder="Last Name" type="text" onChange={e=> setLastName(e.target.value)} required/>
+              <Input placeholder="Password" type="password" onChange={e=> setPass(e.target.value)} required/>
+              <Button type="submit">Register for free</Button>
             </Form>
           </FormWrapper>
         </Wrapper>
