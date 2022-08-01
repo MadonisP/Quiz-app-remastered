@@ -1,3 +1,4 @@
+import { useContext,useState } from 'react'
 import styled from 'styled-components'
 import Footer from '../components/Footer'
 import LoginNavbar from '../components/LoginNavbar'
@@ -8,7 +9,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { ArrowForward } from '@mui/icons-material';
+import { ArrowForward, AddCircle, RemoveCircleOutline } from '@mui/icons-material';
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../FirebaseConfig"
+import { AuthContext } from "../context/AuthContext"
+import Popup from 'reactjs-popup';
 
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
@@ -75,6 +80,55 @@ cursor: pointer;
   `
 
 const CreateQuiz = () => {
+
+    const { currentUser } = useContext(AuthContext);
+
+    const addQuestion = async (e) => {
+        e.preventDefault();
+        console.log(currentUser.uid);
+        try {
+            const docRef = await addDoc(collection(db, "exams"), {
+                creatorUser: currentUser.uid,
+                quizName: "deneme",
+                last: "Lovelace",
+                born: 1815
+            });
+            console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+    }
+
+    const [inputFields, setInputFields] = useState([
+        { id: currentUser.uid, firstName: '', lastName: '' },
+    ]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("InputFields", inputFields);
+    };
+
+    const handleChangeInput = (id, event) => {
+        const newInputFields = inputFields.map(i => {
+            if (id === i.id) {
+                i[event.target.name] = event.target.value
+            }
+            return i;
+        })
+
+        setInputFields(newInputFields);
+    }
+
+    const handleAddFields = () => {
+        setInputFields([...inputFields, { id: currentUser.uid, firstName: '', lastName: '' }])
+    }
+
+    const handleRemoveFields = id => {
+        const values = [...inputFields];
+        values.splice(values.findIndex(value => value.id === id), 1);
+        setInputFields(values);
+    }
+
     return (
         <>
             <LoginNavbar />
@@ -100,11 +154,11 @@ const CreateQuiz = () => {
                                         <TableCell component="th" scope="row" style={{ color: "#222831", fontSize: "16px", fontWeight: "600", padding: "25px" }}>
                                             {row.name}
                                             <br /><Check type="radio" name="options" value="A" />
-                                            <Label for="A">first option</Label>
+                                            <Label htmlFor="A">first option</Label>
                                             <br /><Check type="radio" name="options" value="B" />
-                                            <Label for="B">second option</Label>
+                                            <Label htmlFor="B">second option</Label>
                                             <br /><Check type="radio" name="options" value="C" />
-                                            <Label for="C">third option</Label>
+                                            <Label htmlFor="C">third option</Label>
                                         </TableCell>
                                         <TableCell align="right"></TableCell>
                                         <TableCell align="right"></TableCell>
@@ -115,11 +169,62 @@ const CreateQuiz = () => {
                             </TableBody>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell><Button>Add Question</Button></TableCell>
+                                    <Popup
+                                        trigger={<button style={{ width: "20%", height: "30px", padding: "5px" }}>Add Question</button>}
+                                        modal
+                                        nested
+                                    >
+                                        {close => (
+                                            <div style={{ fontSize: "12px", backgroundColor: "#FFCFDF", width: "800px", height: "auto" }}>
+                                                <button style={{ cursor: "pointer", position: "absolute", display: "block", padding: "2px 5px", lineHeight: "20px", right: "-10px", top: "-10px", fontSize: "24px", background: "#ffffff", borderRadius: "18px", border: "1px solid #cfcece" }} onClick={close}>
+                                                    &times;
+                                                </button>
+
+                                                <div style={{ width: "100", borderBottom: "1px solid gray", fontSize: "18px", padding: "5px" }}>New Question</div>
+                                                <div style={{ fontSize: "16px", fontWeight: "500" }}>Question:</div>
+                                                <form style={{ width: "100%", padding: "10px 5px" }}>
+
+                                                    {inputFields.map(inputField => (
+                                                        <div key={inputField.id}>
+                                                            <textarea
+                                                                name="firstName"
+                                                                label="First Name"
+                                                                variant="filled"
+                                                                value={inputField.firstName}
+                                                                onChange={event => handleChangeInput(inputField.id, event)}
+                                                            />
+                                                            <textarea
+                                                                name="lastName"
+                                                                label="Last Name"
+                                                                variant="filled"
+                                                                value={inputField.lastName}
+                                                                onChange={event => handleChangeInput(inputField.id, event)}
+                                                            />
+
+                                                            <RemoveCircleOutline disabled={inputFields.length === 1} onClick={() => handleRemoveFields(inputField.id)}/>                                                            
+                                                            <AddCircle onClick={handleAddFields}/>
+
+                                                        </div>
+                                                    ))}
+                                                    <div style={{ width: "100%", padding: "10px 5px", margin: "auto", textAlign: "center" }}>
+                                                        <Popup
+                                                            trigger={<button className="formQButton" style={{ width: "30%", marginRight: "10px" }}> Confirm </button>}
+                                                            position="top center"
+                                                            nested
+                                                        >
+                                                        </Popup>
+                                                        <button
+                                                            className="formQButton" onClick={() => { close(); }} style={{ width: "30%", backgroundColor: "#ECE2E1", color: "#100F0F" }}> Close
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        )}
+                                    </Popup>
                                     <TableCell></TableCell>
                                     <TableCell></TableCell>
                                     <TableCell></TableCell>
-                                    <TableCell align='right'><NextButton>Next<ArrowForward style={{verticalAlign:"middle",  transform: "scale(0.9)"}}/></NextButton></TableCell>
+                                    <TableCell align='right'><NextButton>Next<ArrowForward style={{ verticalAlign: "middle", transform: "scale(0.9)" }} /></NextButton></TableCell>
                                 </TableRow>
                             </TableHead>
                         </Table>
