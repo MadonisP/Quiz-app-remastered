@@ -1,6 +1,8 @@
-import styled  from 'styled-components'
+import {useContext} from "react"
+import styled from 'styled-components'
 import { Link } from "react-router-dom";
 import { Help, Logout } from '@mui/icons-material';
+import {AuthContext} from '../context/AuthContext'
 
 const Container = styled.div`
 height:60px;
@@ -71,6 +73,15 @@ padding:10px;
 
 
 const LoginNavbar = () => {
+
+    const { currentUser } = useContext(AuthContext)
+
+    const { dispatch } = useContext(AuthContext)
+
+    const handleLogout = () => {
+        dispatch({ type: "LOGOUT" })
+    }
+
     return (
         <Container>
             <Wrapper>
@@ -82,16 +93,16 @@ const LoginNavbar = () => {
                     <MenuItem>Reports</MenuItem>
                 </Left>
                 <Right>
-                    <Link to="/login" style={{ textDecoration: "none" }}>
-                        <MenuItemSecond><Help style={{verticalAlign:"middle"}}/></MenuItemSecond>
+                    <Link to="/help" style={{ textDecoration: "none" }}>
+                        <MenuItemSecond><Help style={{ verticalAlign: "middle" }} /></MenuItemSecond>
                     </Link>
-                    <Link to="/register" style={{ textDecoration: "none", marginRight: "10%" }}>
-                        <MenuItemFirst><Logout style={{verticalAlign:"middle"}}/> Logout</MenuItemFirst>
+                    <Link to="/" style={{ textDecoration: "none", marginRight: "10%" }}>
+                        <MenuItemFirst><Logout style={{ verticalAlign: "middle" }} onClick={handleLogout} /> Logout</MenuItemFirst>
                     </Link>
                 </Right>
             </Wrapper>
         </Container>
-  )
+    )
 }
 
 export default LoginNavbar

@@ -32,7 +32,7 @@ const Container = styled.table`
     background-color:#EEEEEE;
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled.caption`
 width:90%;
 margin:5%;
 `

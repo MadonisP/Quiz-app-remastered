@@ -5,6 +5,7 @@ import {createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth,db } from '../FirebaseConfig'
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
 width:100vw;
@@ -71,6 +72,7 @@ const Register = () => {
   const [lastName, setLastName] = useState();
   const [pass, setPass] = useState();
 
+  const navigate = useNavigate()
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -83,6 +85,7 @@ const Register = () => {
         email: email,
         timeStamp: serverTimestamp(),
       });
+      navigate("/login")
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -97,7 +100,7 @@ const Register = () => {
           <HeroTitle>Sign up to OEM for free</HeroTitle>
           <Title>Register to create and manage online tests, quizzes and assessments with OEM.</Title>
           <FormWrapper>
-            <Form action={handleRegister}>
+            <Form onSubmit={handleRegister}>
               <Input placeholder="Email (username)" type="email" onChange={e=> setEmail(e.target.value)} required/>
               <Input placeholder="First Name" type="text" onChange={e=> setName(e.target.value)} required/>
               <Input placeholder="Last Name" type="text" onChange={e=> setLastName(e.target.value)} required/>

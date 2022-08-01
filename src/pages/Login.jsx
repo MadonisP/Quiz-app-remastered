@@ -1,6 +1,11 @@
 import Navbar from "../components/Navbar";
 import Footer from '../components/Footer';
 import styled from 'styled-components'
+import { useContext, useState } from 'react'
+import { auth } from "../FirebaseConfig"
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { AuthContext } from '../context/AuthContext'
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
 width:100%;
@@ -64,6 +69,32 @@ cursor:pointer;
 `;
 
 const Login = () => {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate()
+
+  const { dispatch } = useContext(AuthContext)
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log("success")
+        const user = userCredential.user;
+        console.log(user)
+        dispatch({ type: "LOGIN", payload: user })
+        navigate("/dashboard")
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage);
+      });
+  }
+
   return (
     <>
       <Navbar />
@@ -71,9 +102,9 @@ const Login = () => {
         <Wrapper>
           <HeroTitle>Login</HeroTitle>
           <FormWrapper>
-            <Form>
-              <Input placeholder="Email" required/>
-              <Input placeholder="Password" required/>
+            <Form onSubmit={handleLogin}>
+              <Input placeholder="Email" type="email" onChange={e => setEmail(e.target.value)} required/>
+              <Input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)} required/>
               <Button>Login</Button>
               <Link href="/register">Create a new account</Link>
             </Form>
