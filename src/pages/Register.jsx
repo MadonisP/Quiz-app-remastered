@@ -1,11 +1,9 @@
 import Navbar from "../components/Navbar";
 import Footer from '../components/Footer';
 import styled from 'styled-components'
-import {createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { auth,db } from '../FirebaseConfig'
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
 
 const Container = styled.div`
 width:100vw;
@@ -76,20 +74,17 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    const response =await fetch('http://localhost:8000/api/register',{
-      method:'POST',
-      headers:{
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email,
-        name,
-        lastName,
-        pass
-      }),
-    })
-    const data = await response.json()
-    console.log(data)
+    const registered = {
+      firstName: name,
+      lastName: lastName,
+      email: email,
+      password: pass,
+    }
+
+    axios.post('http://localhost:8000/app/register', registered)
+      .then(response => console.log(response.data))
+
+    navigate("/login");
   }
 
 
@@ -102,10 +97,10 @@ const Register = () => {
           <Title>Register to create and manage online tests, quizzes and assessments with OEM.</Title>
           <FormWrapper>
             <Form onSubmit={handleRegister}>
-              <Input placeholder="Email (username)" type="email" onChange={e=> setEmail(e.target.value)} required/>
-              <Input placeholder="First Name" type="text" onChange={e=> setName(e.target.value)} required/>
-              <Input placeholder="Last Name" type="text" onChange={e=> setLastName(e.target.value)} required/>
-              <Input placeholder="Password" type="password" onChange={e=> setPass(e.target.value)} required/>
+              <Input placeholder="Email (username)" type="email" onChange={e => setEmail(e.target.value)} required />
+              <Input placeholder="First Name" type="text" onChange={e => setName(e.target.value)} required />
+              <Input placeholder="Last Name" type="text" onChange={e => setLastName(e.target.value)} required />
+              <Input placeholder="Password" type="password" onChange={e => setPass(e.target.value)} required />
               <Button type="submit">Register for free</Button>
             </Form>
           </FormWrapper>
