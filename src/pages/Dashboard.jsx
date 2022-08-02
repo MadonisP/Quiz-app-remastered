@@ -77,27 +77,12 @@ const Dashboard = () => {
   const [examName, setExamName] = useState("");
   const { currentUser } = useContext(AuthContext);
 
-  const getExamNames = async (e) => {
+  const getExamNames =  () => {
 
-
-    if (e && e.preventDefault) { e.preventDefault(); }
-    const q = query(collection(db, "examQuestions"), where("creatorUser", "==", currentUser.uid));
-
-    const querySnapshot = await getDocs(q);
-    const examDatasCarry = querySnapshot.docs.map(doc => doc.data());
-    setExamDatas(examDatasCarry);
-    setIsLoading(false);
-    console.log(examDatas)
   }
 
-  const handleTime = async(e) => {
-    if (e && e.preventDefault) { e.preventDefault(); }
-
-    const docRef = await addDoc(collection(db, "exams"), {
-      creatorUserId: currentUser.uid,
-      name: examName,
-    });
-    console.log("Document written with ID: ", docRef.id);
+  const handleName = () => {
+  
   }
 
   if (isLoading) {
@@ -123,7 +108,7 @@ const Dashboard = () => {
                 <button style={{ cursor: "pointer", position: "absolute", display: "block", padding: "2px 5px", lineHeight: "20px", right: "-10px", top: "-10px", fontSize: "24px", background: "#ffffff", borderRadius: "18px", border: "1px solid #cfcece" }} onClick={close}>
                   &times;
                 </button>
-                <form onSubmit={handleTime}>
+                <form onSubmit={handleName}>
                   <div style={{ width: "100", borderBottom: "1px solid gray", fontSize: "18px", padding: "5px", color: "white" }}>New Exam</div>
                   <div style={{ width: "100%", padding: "10px 5px" }}>
                     <input type="text" style={{ width: "90%", padding: "5px", borderRadius: "6px", border: "none" }} placeholder='Enter title for your exam' onChange={e => setExamName(e.target.value)} required /><br />

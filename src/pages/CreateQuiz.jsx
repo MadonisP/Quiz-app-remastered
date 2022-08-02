@@ -132,8 +132,7 @@ const CreateQuiz = () => {
         const examDatasCarry = querySnapshot.docs.map(doc => doc.data());
         setExamDatas(examDatasCarry);
         setIsLoading(false);
-        console.log(examDatas)
-        
+        console.log(examDatas)  
     }
 
     if (isLoading) {

@@ -1,6 +1,9 @@
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Footer from '../components/Footer'
 import LoginNavbar from '../components/LoginNavbar'
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../FirebaseConfig"
 
 const Container = styled.div`
 width: 100%;
@@ -57,26 +60,29 @@ cursor: pointer;
 `
 
 const Configure = () => {
+
+
+
   return (
     <>
       <LoginNavbar />
       <Container>
         <Wrapper>
-          <Form>
+          <Form >
             <Section>
               <Label for="quizName">Quiz Name</Label>
-              <Input type="text" name="quizName" value="deneme" />{/*Name */}
+              <Input type="text" name="quizName" value="deneme"  />{/*Name */}
             </Section>
             <Section>
               <Label for="time">Time Limit</Label>
-              <Input type="text" name="time" placeholder='20 min by default' />{/*Time */}
+              <Input type="number" name="time" placeholder='20 min by default' />{/*Time */}
             </Section>
             <Section>
               <Label for="grade">Pass Grade</Label>
               <Input type="text" name="grade" placeholder='70 by default' />{/*Grade */}
             </Section>
             <Section>
-              <Button align="right" style={{margin:"0px 400px 20px 20px"}}>Save</Button>
+              <Button align="right" style={{ margin: "0px 400px 20px 20px" }}>Save</Button>
             </Section>
           </Form>
         </Wrapper>
