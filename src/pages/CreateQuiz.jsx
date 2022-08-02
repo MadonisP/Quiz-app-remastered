@@ -1,4 +1,4 @@
-import { useContext,useState } from 'react'
+import { useContext, useState } from 'react'
 import styled from 'styled-components'
 import Footer from '../components/Footer'
 import LoginNavbar from '../components/LoginNavbar'
@@ -14,6 +14,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { db } from "../FirebaseConfig"
 import { AuthContext } from "../context/AuthContext"
 import Popup from 'reactjs-popup';
+import { v4 as uuidv4 } from 'uuid';
 
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
@@ -82,16 +83,19 @@ cursor: pointer;
 const CreateQuiz = () => {
 
     const { currentUser } = useContext(AuthContext);
+    const [options, setOptions] = useState([]);
+    const [correctOption, setCorrectOption] = useState();
 
     const addQuestion = async (e) => {
         e.preventDefault();
-        console.log(currentUser.uid);
+        const inputOption = inputFields.map((inputF) => inputF.option)
+        setOptions(inputOption);
+        console.log(options)
         try {
-            const docRef = await addDoc(collection(db, "exams"), {
+            const docRef = await addDoc(collection(db, "examQuestions"), {
                 creatorUser: currentUser.uid,
-                quizName: "deneme",
-                last: "Lovelace",
-                born: 1815
+                options: options,
+                correctAnswer: correctOption
             });
             console.log("Document written with ID: ", docRef.id);
         } catch (e) {
@@ -100,13 +104,8 @@ const CreateQuiz = () => {
     }
 
     const [inputFields, setInputFields] = useState([
-        { id: currentUser.uid, firstName: '', lastName: '' },
+        { id: uuidv4(), option: '' },
     ]);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("InputFields", inputFields);
-    };
 
     const handleChangeInput = (id, event) => {
         const newInputFields = inputFields.map(i => {
@@ -120,7 +119,7 @@ const CreateQuiz = () => {
     }
 
     const handleAddFields = () => {
-        setInputFields([...inputFields, { id: currentUser.uid, firstName: '', lastName: '' }])
+        setInputFields([...inputFields, { id: uuidv4(), option: '' }])
     }
 
     const handleRemoveFields = id => {
@@ -128,6 +127,15 @@ const CreateQuiz = () => {
         values.splice(values.findIndex(value => value.id === id), 1);
         setInputFields(values);
     }
+
+    const selectShortlistedApplicant = (e) => {
+        const checked = e.target.checked;
+        if (checked) {
+            console.log("checked")
+        } else {
+            console.log("check")
+        }
+    };
 
     return (
         <>
@@ -182,33 +190,27 @@ const CreateQuiz = () => {
 
                                                 <div style={{ width: "100", borderBottom: "1px solid gray", fontSize: "18px", padding: "5px" }}>New Question</div>
                                                 <div style={{ fontSize: "16px", fontWeight: "500" }}>Question:</div>
-                                                <form style={{ width: "100%", padding: "10px 5px" }}>
+                                                <form onSubmit={addQuestion} style={{ width: "100%", padding: "10px 5px" }}>
 
                                                     {inputFields.map(inputField => (
                                                         <div key={inputField.id}>
                                                             <textarea
-                                                                name="firstName"
+                                                                name="option"
                                                                 label="First Name"
                                                                 variant="filled"
-                                                                value={inputField.firstName}
-                                                                onChange={event => handleChangeInput(inputField.id, event)}
-                                                            />
-                                                            <textarea
-                                                                name="lastName"
-                                                                label="Last Name"
-                                                                variant="filled"
-                                                                value={inputField.lastName}
+                                                                value={inputField.option}
                                                                 onChange={event => handleChangeInput(inputField.id, event)}
                                                             />
 
-                                                            <RemoveCircleOutline disabled={inputFields.length === 1} onClick={() => handleRemoveFields(inputField.id)}/>                                                            
-                                                            <AddCircle onClick={handleAddFields}/>
-
+                                                            <RemoveCircleOutline disabled={inputFields.length === 1} onClick={() => handleRemoveFields(inputField.id)} />
+                                                            <AddCircle onClick={handleAddFields} />
+                                                            <input type="radio" name='correct' value={inputField.option} onClick={(e) => setCorrectOption(e.target.value)} />
+                                                            <Label htmlFor="correct">Correct</Label>
                                                         </div>
                                                     ))}
                                                     <div style={{ width: "100%", padding: "10px 5px", margin: "auto", textAlign: "center" }}>
                                                         <Popup
-                                                            trigger={<button className="formQButton" style={{ width: "30%", marginRight: "10px" }}> Confirm </button>}
+                                                            trigger={<button className="formQButton" type='submit' style={{ width: "30%", marginRight: "10px" }}> Confirm </button>}
                                                             position="top center"
                                                             nested
                                                         >
