@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Footer from '../components/Footer'
 import LoginNavbar from '../components/LoginNavbar'
@@ -10,23 +10,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { ArrowForward, AddCircle, RemoveCircleOutline } from '@mui/icons-material';
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { db } from "../FirebaseConfig"
 import { AuthContext } from "../context/AuthContext"
 import Popup from 'reactjs-popup';
 import { v4 as uuidv4 } from 'uuid';
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData('Deneme sınavı 1', 159, 6.0, 24, 4.0),
-    createData('Deneme sınavı 2', 237, 9.0, 37, 4.3),
-    createData('Deneme sınavı 3', 262, 16.0, 24, 6.0),
-    createData('Deneme sınavı 4', 305, 3.7, 67, 4.3),
-    createData('Deneme sınavı 5', 356, 16.0, 49, 3.9),
-];
 
 const Container = styled.table`
       width: 100%;
@@ -85,6 +74,12 @@ const CreateQuiz = () => {
     const { currentUser } = useContext(AuthContext);
     const [options, setOptions] = useState([]);
     const [correctOption, setCorrectOption] = useState();
+    const [inputFields, setInputFields] = useState([
+        { id: uuidv4(), option: '' },
+    ]);
+    const [examDatas, setExamDatas] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
 
     const addQuestion = async (e) => {
         e.preventDefault();
@@ -102,10 +97,6 @@ const CreateQuiz = () => {
             console.error("Error adding document: ", e);
         }
     }
-
-    const [inputFields, setInputFields] = useState([
-        { id: uuidv4(), option: '' },
-    ]);
 
     const handleChangeInput = (id, event) => {
         const newInputFields = inputFields.map(i => {
@@ -128,15 +119,31 @@ const CreateQuiz = () => {
         setInputFields(values);
     }
 
-    const selectShortlistedApplicant = (e) => {
-        const checked = e.target.checked;
-        if (checked) {
-            console.log("checked")
-        } else {
-            console.log("check")
-        }
-    };
 
+    useEffect((e) => {
+        getExams(e);
+    },[]);
+
+    const getExams = async (e) => {
+        if (e && e.preventDefault) { e.preventDefault(); }
+        const q = query(collection(db, "examQuestions"), where("creatorUser", "==", currentUser.uid));
+
+        const querySnapshot = await getDocs(q);
+        const examDatasCarry = querySnapshot.docs.map(doc => doc.data());
+        setExamDatas(examDatasCarry);
+        setIsLoading(false);
+        console.log(examDatas)
+        
+    }
+
+    if (isLoading) {
+        return (
+            <>
+            <LoginNavbar />
+                <div style={{ verticalAlign: "middle", display: "flex", border: "16px solid #f3f3f3", borderRadius: "50%", borderTop: "16px solid #3498db", width: "120px", height: "120px", WebkitAnimation: "spin 2s linear infinite" }}></div>
+            <Footer/>
+            </>)
+    }
     return (
         <>
             <LoginNavbar />
@@ -154,44 +161,43 @@ const CreateQuiz = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.map((row) => (
-                                    <TableRow
-                                        key={row.name}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row" style={{ color: "#222831", fontSize: "16px", fontWeight: "600", padding: "25px" }}>
-                                            {row.name}
-                                            <br /><Check type="radio" name="options" value="A" />
-                                            <Label htmlFor="A">first option</Label>
-                                            <br /><Check type="radio" name="options" value="B" />
-                                            <Label htmlFor="B">second option</Label>
-                                            <br /><Check type="radio" name="options" value="C" />
-                                            <Label htmlFor="C">third option</Label>
-                                        </TableCell>
-                                        <TableCell align="right"></TableCell>
-                                        <TableCell align="right"></TableCell>
-                                        <TableCell align="right"></TableCell>
-                                        <TableCell align="right"></TableCell>
-                                    </TableRow>
-                                ))}
+                                {/*{examDatasCarry.map((exam) => ( */}
+                                <TableRow
+
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell component="th" scope="exam" style={{ color: "#222831", fontSize: "16px", fontWeight: "600", padding: "25px" }}>
+
+                                        <br /><Check type="radio" name="options" value="A" />
+                                        <Label htmlFor="A">first option</Label>
+                                        <br /><Check type="radio" name="options" value="B" />
+                                        <Label htmlFor="B">second option</Label>
+                                        <br /><Check type="radio" name="options" value="C" />
+                                        <Label htmlFor="C">third option</Label>
+                                    </TableCell>
+                                    <TableCell align="right"></TableCell>
+                                    <TableCell align="right"></TableCell>
+                                    <TableCell align="right"></TableCell>
+                                    <TableCell align="right"></TableCell>
+                                </TableRow>
+                                {/* ))} */}
                             </TableBody>
                             <TableHead>
                                 <TableRow>
                                     <Popup
-                                        trigger={<button style={{ width: "20%", height: "30px", padding: "5px" }}>Add Question</button>}
+                                        trigger={<Button style={{marginLeft:"-65%" }}>Add Question</Button>}
                                         modal
                                         nested
                                     >
                                         {close => (
-                                            <div style={{ fontSize: "12px", backgroundColor: "#FFCFDF", width: "800px", height: "auto" }}>
-                                                <button style={{ cursor: "pointer", position: "absolute", display: "block", padding: "2px 5px", lineHeight: "20px", right: "-10px", top: "-10px", fontSize: "24px", background: "#ffffff", borderRadius: "18px", border: "1px solid #cfcece" }} onClick={close}>
+                                            <div style={{ fontSize: "12px", backgroundColor: "#393E46", width: "800px", height: "auto" }}>
+                                                <button style={{ cursor: "pointer", position: "absolute", display: "block", padding: "2px 5px", lineHeight: "20px", right: "-10px", top: "-10px", fontSize: "24px", background: "#EEEEEE", borderRadius: "18px", border: "1px solid #cfcece" }} onClick={close}>
                                                     &times;
                                                 </button>
 
-                                                <div style={{ width: "100", borderBottom: "1px solid gray", fontSize: "18px", padding: "5px" }}>New Question</div>
-                                                <div style={{ fontSize: "16px", fontWeight: "500" }}>Question:</div>
+                                                <div style={{ width: "100", borderBottom: "1px solid gray", fontSize: "18px", padding: "5px", color:"white" }}>New Question</div>
+                                                <div style={{padding:"5px", fontSize: "16px", fontWeight: "500", color:"white" }}>Question:</div>
                                                 <form onSubmit={addQuestion} style={{ width: "100%", padding: "10px 5px" }}>
-
                                                     {inputFields.map(inputField => (
                                                         <div key={inputField.id}>
                                                             <textarea
@@ -200,24 +206,25 @@ const CreateQuiz = () => {
                                                                 variant="filled"
                                                                 value={inputField.option}
                                                                 onChange={event => handleChangeInput(inputField.id, event)}
+                                                                style={{ maxWidth: "650px",maxHeight:"200px", width:"650px"  }}
                                                             />
 
-                                                            <RemoveCircleOutline disabled={inputFields.length === 1} onClick={() => handleRemoveFields(inputField.id)} />
-                                                            <AddCircle onClick={handleAddFields} />
-                                                            <input type="radio" name='correct' value={inputField.option} onClick={(e) => setCorrectOption(e.target.value)} />
-                                                            <Label htmlFor="correct">Correct</Label>
+                                                            <RemoveCircleOutline style={{ verticalAlign: "top", color:"#EEEEEE" }} disabled={inputFields.length === 1} onClick={() => handleRemoveFields(inputField.id)} />
+                                                            <AddCircle style={{ verticalAlign: "top", color:"#EEEEEE" }} onClick={handleAddFields} />
+                                                            <input style={{ verticalAlign: "top", color:"#EEEEEE" }} type="radio" name='correct' value={inputField.option} onClick={(e) => setCorrectOption(e.target.value)} />
+                                                            <Label style={{ verticalAlign: "top", color:"#EEEEEE" }} htmlFor="correct">Correct</Label>
                                                         </div>
                                                     ))}
                                                     <div style={{ width: "100%", padding: "10px 5px", margin: "auto", textAlign: "center" }}>
                                                         <Popup
-                                                            trigger={<button className="formQButton" type='submit' style={{ width: "30%", marginRight: "10px" }}> Confirm </button>}
+                                                            trigger={<Button className="formQButton" type='submit' style={{ width: "30%", marginRight: "10px" }}> Confirm </Button>}
                                                             position="top center"
                                                             nested
                                                         >
                                                         </Popup>
-                                                        <button
+                                                        <Button
                                                             className="formQButton" onClick={() => { close(); }} style={{ width: "30%", backgroundColor: "#ECE2E1", color: "#100F0F" }}> Close
-                                                        </button>
+                                                        </Button>
                                                     </div>
                                                 </form>
                                             </div>

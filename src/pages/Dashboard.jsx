@@ -9,6 +9,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { BarChart, Delete, Edit, Visibility } from "@mui/icons-material";
+import { useContext, useEffect, useState } from "react";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../FirebaseConfig"
+import { AuthContext } from "../context/AuthContext"
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -46,7 +50,7 @@ font-size:14px;
 cursor: pointer;
 `
 
-const CreateButton= styled.button`
+const CreateButton = styled.button`
 font-size:26px;
 font-weight:600;
 margin-bottom:3%;
@@ -62,6 +66,36 @@ cursor: pointer;
 `
 
 const Dashboard = () => {
+
+  useEffect((e) => {
+    getExamNames(e);
+  }, []);
+
+  const [examDatas, setExamDatas] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { currentUser } = useContext(AuthContext);
+
+  const getExamNames = async (e) => {
+
+
+    if (e && e.preventDefault) { e.preventDefault(); }
+    const q = query(collection(db, "examQuestions"), where("creatorUser", "==", currentUser.uid));
+
+    const querySnapshot = await getDocs(q);
+    const examDatasCarry = querySnapshot.docs.map(doc => doc.data());
+    setExamDatas(examDatasCarry);
+    setIsLoading(false);
+    console.log(examDatas)
+  }
+
+  if (isLoading) {
+    return (
+      <>
+        <LoginNavbar />
+        <div style={{ verticalAlign: "middle", display: "flex", border: "16px solid #f3f3f3", borderRadius: "50%", borderTop: "16px solid #3498db", width: "120px", height: "120px", WebkitAnimation: "spin 2s linear infinite" }}></div>
+        <Footer />
+      </>)
+  }
   return (
     <>
       <LoginNavbar />
@@ -88,10 +122,10 @@ const Dashboard = () => {
                     <TableCell component="th" scope="row">
                       {row.name}
                     </TableCell>
-                    <TableCell align="right"><Button><BarChart style={{verticalAlign:"middle", padding:"5px"}}/>Analyze</Button></TableCell>
-                    <TableCell align="right"><Button><Visibility style={{verticalAlign:"middle", padding:"5px"}}/>Preview</Button></TableCell>
-                    <TableCell align="right"><Button><Edit style={{verticalAlign:"middle", padding:"5px"}}/>Edit</Button></TableCell>
-                    <TableCell align="right"><Button><Delete style={{verticalAlign:"middle", padding:"5px"}}/>Delete</Button></TableCell>
+                    <TableCell align="right"><Button><BarChart style={{ verticalAlign: "middle", padding: "5px" }} />Analyze</Button></TableCell>
+                    <TableCell align="right"><Button><Visibility style={{ verticalAlign: "middle", padding: "5px" }} />Preview</Button></TableCell>
+                    <TableCell align="right"><Button><Edit style={{ verticalAlign: "middle", padding: "5px" }} />Edit</Button></TableCell>
+                    <TableCell align="right"><Button><Delete style={{ verticalAlign: "middle", padding: "5px" }} />Delete</Button></TableCell>
                   </TableRow>
                 ))}
               </TableBody>
