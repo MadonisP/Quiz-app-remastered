@@ -68,11 +68,7 @@ cursor: pointer;
 
 const Dashboard = () => {
 
-  useEffect((e) => {
-    getExamNames(e);
-  }, []);
 
-  const [examDatas, setExamDatas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [examName, setExamName] = useState("");
   const { currentUser } = useContext(AuthContext);

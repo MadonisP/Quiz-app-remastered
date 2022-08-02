@@ -76,19 +76,20 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    try {
-      const res = await createUserWithEmailAndPassword(auth, email, pass);//google encrypts password so we not need to do it
-      await setDoc(doc(db, "users", res.user.uid), {
-        id: res.user.uid,
-        first: name,
-        last: lastName,
-        email: email,
-        timeStamp: serverTimestamp(),
-      });
-      navigate("/login")
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
+    const response =await fetch('http://localhost:8000/api/register',{
+      method:'POST',
+      headers:{
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        name,
+        lastName,
+        pass
+      }),
+    })
+    const data = await response.json()
+    console.log(data)
   }
 
 
