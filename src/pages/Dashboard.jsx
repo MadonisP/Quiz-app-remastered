@@ -10,9 +10,10 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { BarChart, Delete, Edit, Visibility } from "@mui/icons-material";
 import { useContext, useEffect, useState } from "react";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc  } from "firebase/firestore";
 import { db } from "../FirebaseConfig"
 import { AuthContext } from "../context/AuthContext"
+import Popup from 'reactjs-popup';
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -73,6 +74,7 @@ const Dashboard = () => {
 
   const [examDatas, setExamDatas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [examName, setExamName] = useState("");
   const { currentUser } = useContext(AuthContext);
 
   const getExamNames = async (e) => {
@@ -88,6 +90,16 @@ const Dashboard = () => {
     console.log(examDatas)
   }
 
+  const handleTime = async(e) => {
+    if (e && e.preventDefault) { e.preventDefault(); }
+
+    const docRef = await addDoc(collection(db, "exams"), {
+      creatorUserId: currentUser.uid,
+      name: examName,
+    });
+    console.log("Document written with ID: ", docRef.id);
+  }
+
   if (isLoading) {
     return (
       <>
@@ -101,7 +113,36 @@ const Dashboard = () => {
       <LoginNavbar />
       <Container>
         <Wrapper>
-          <CreateButton>Create Quiz</CreateButton>
+          <Popup
+            trigger={<CreateButton >Create Exam </CreateButton>}
+            modal
+            nested
+          >
+            {close => (
+              <div style={{ fontSize: "12px", backgroundColor: "#393E46", width: "400px" }}>
+                <button style={{ cursor: "pointer", position: "absolute", display: "block", padding: "2px 5px", lineHeight: "20px", right: "-10px", top: "-10px", fontSize: "24px", background: "#ffffff", borderRadius: "18px", border: "1px solid #cfcece" }} onClick={close}>
+                  &times;
+                </button>
+                <form onSubmit={handleTime}>
+                  <div style={{ width: "100", borderBottom: "1px solid gray", fontSize: "18px", padding: "5px", color: "white" }}>New Exam</div>
+                  <div style={{ width: "100%", padding: "10px 5px" }}>
+                    <input type="text" style={{ width: "90%", padding: "5px", borderRadius: "6px", border: "none" }} placeholder='Enter title for your exam' onChange={e => setExamName(e.target.value)} required /><br />
+                  </div>
+                  <div style={{ width: "100%", padding: "10px 5px", margin: "auto", textAlign: "center" }}>
+                    <Popup
+                      trigger={<Button className="formQButton" style={{ width: "30%", marginRight: "10px", backgroundColor: "#0275d8", color: "white" }}> Confirm </Button>}
+                      position="top center"
+                      nested
+                    >
+                    </Popup>
+                    <Button
+                      className="formQButton" onClick={() => { close(); }} style={{ width: "30%", color: "#100F0F" }}> Close
+                    </Button>
+                  </div>
+                </form>
+              </div>
+            )}
+          </Popup>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
