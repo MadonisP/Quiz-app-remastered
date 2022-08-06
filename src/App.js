@@ -6,9 +6,11 @@ import LoginNavbar from "./components/LoginNavbar";
 import Dashboard from "./pages/Dashboard";
 import CreateQuiz from "./pages/CreateQuiz";
 import Configure from "./pages/Configure";
+import Deneme from "./pages/Deneme";
 
 
 function App() {
+
   return (
     <div>
       <Routes>
@@ -19,6 +21,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/create" element={<CreateQuiz />} />
         <Route path="/configure" element={<Configure />} />
+        <Route path="/dene" element={<Deneme />} />
       </Routes>
     </div>
   );

@@ -84,7 +84,7 @@ const Register = () => {
     axios.post('http://localhost:8000/app/register', registered)
       .then(response => console.log(response.data))
 
-    navigate("/login");
+    navigate("/login"); 
   }
 
 

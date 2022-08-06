@@ -10,11 +10,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { ArrowForward, AddCircle, RemoveCircleOutline } from '@mui/icons-material';
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
-import { db } from "../FirebaseConfig"
-import { AuthContext } from "../context/AuthContext"
 import Popup from 'reactjs-popup';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from "react-router";
 
 
 const Container = styled.table`
@@ -71,7 +69,6 @@ cursor: pointer;
 
 const CreateQuiz = () => {
 
-    const { currentUser } = useContext(AuthContext);
     const [options, setOptions] = useState([]);
     const [correctOption, setCorrectOption] = useState();
     const [inputFields, setInputFields] = useState([
@@ -80,32 +77,41 @@ const CreateQuiz = () => {
     const [examDatas, setExamDatas] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const navigate = useNavigate();
 
     const addQuestion = async (e) => {
         e.preventDefault();
-        const inputOption = inputFields.map((inputF) => inputF.option)
+        const inputOption = await Promise.all(inputFields.map((inputF) => inputF.option))
+        console.log(inputOption);
+
         setOptions(inputOption);
         console.log(options)
-        try {
-            const docRef = await addDoc(collection(db, "examQuestions"), {
-                creatorUser: currentUser.uid,
-                options: options,
-                correctAnswer: correctOption
+        const newQuestion = {
+            options: inputOption,
+            correctOption: correctOption,
+        };
+
+        await fetch("http://localhost:5000/examquestion/add", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newQuestion),
+        })
+            .catch(error => {
+                window.alert(error);
+                return;
             });
-            console.log("Document written with ID: ", docRef.id);
-        } catch (e) {
-            console.error("Error adding document: ", e);
-        }
+
     }
 
-    const handleChangeInput = (id, event) => {
-        const newInputFields = inputFields.map(i => {
+    const handleChangeInput = async (id, event) => {
+        const newInputFields = await Promise.all(inputFields.map(i => {
             if (id === i.id) {
                 i[event.target.name] = event.target.value
             }
             return i;
-        })
-
+        }))
         setInputFields(newInputFields);
     }
 
@@ -122,27 +128,13 @@ const CreateQuiz = () => {
 
     useEffect((e) => {
         getExams(e);
-    },[]);
+    }, []);
 
     const getExams = async (e) => {
-        if (e && e.preventDefault) { e.preventDefault(); }
-        const q = query(collection(db, "examQuestions"), where("creatorUser", "==", currentUser.uid));
 
-        const querySnapshot = await getDocs(q);
-        const examDatasCarry = querySnapshot.docs.map(doc => doc.data());
-        setExamDatas(examDatasCarry);
-        setIsLoading(false);
-        console.log(examDatas)  
     }
 
-    if (isLoading) {
-        return (
-            <>
-            <LoginNavbar />
-                <div style={{ verticalAlign: "middle", display: "flex", border: "16px solid #f3f3f3", borderRadius: "50%", borderTop: "16px solid #3498db", width: "120px", height: "120px", WebkitAnimation: "spin 2s linear infinite" }}></div>
-            <Footer/>
-            </>)
-    }
+
     return (
         <>
             <LoginNavbar />
@@ -184,7 +176,7 @@ const CreateQuiz = () => {
                             <TableHead>
                                 <TableRow>
                                     <Popup
-                                        trigger={<Button style={{marginLeft:"-65%" }}>Add Question</Button>}
+                                        trigger={<Button style={{ marginLeft: "-65%" }}>Add Question</Button>}
                                         modal
                                         nested
                                     >
@@ -194,8 +186,8 @@ const CreateQuiz = () => {
                                                     &times;
                                                 </button>
 
-                                                <div style={{ width: "100", borderBottom: "1px solid gray", fontSize: "18px", padding: "5px", color:"white" }}>New Question</div>
-                                                <div style={{padding:"5px", fontSize: "16px", fontWeight: "500", color:"white" }}>Question:</div>
+                                                <div style={{ width: "100", borderBottom: "1px solid gray", fontSize: "18px", padding: "5px", color: "white" }}>New Question</div>
+                                                <div style={{ padding: "5px", fontSize: "16px", fontWeight: "500", color: "white" }}>Question:</div>
                                                 <form onSubmit={addQuestion} style={{ width: "100%", padding: "10px 5px" }}>
                                                     {inputFields.map(inputField => (
                                                         <div key={inputField.id}>
@@ -205,13 +197,13 @@ const CreateQuiz = () => {
                                                                 variant="filled"
                                                                 value={inputField.option}
                                                                 onChange={event => handleChangeInput(inputField.id, event)}
-                                                                style={{ maxWidth: "650px",maxHeight:"200px", width:"650px"  }}
+                                                                style={{ maxWidth: "650px", maxHeight: "200px", width: "650px" }}
                                                             />
 
-                                                            <RemoveCircleOutline style={{ verticalAlign: "top", color:"#EEEEEE" }} disabled={inputFields.length === 1} onClick={() => handleRemoveFields(inputField.id)} />
-                                                            <AddCircle style={{ verticalAlign: "top", color:"#EEEEEE" }} onClick={handleAddFields} />
-                                                            <input style={{ verticalAlign: "top", color:"#EEEEEE" }} type="radio" name='correct' value={inputField.option} onClick={(e) => setCorrectOption(e.target.value)} />
-                                                            <Label style={{ verticalAlign: "top", color:"#EEEEEE" }} htmlFor="correct">Correct</Label>
+                                                            <RemoveCircleOutline style={{ verticalAlign: "top", color: "#EEEEEE" }} disabled={inputFields.length === 1} onClick={() => handleRemoveFields(inputField.id)} />
+                                                            <AddCircle style={{ verticalAlign: "top", color: "#EEEEEE" }} onClick={handleAddFields} />
+                                                            <input style={{ verticalAlign: "top", color: "#EEEEEE" }} type="radio" name='correct' value={inputField.option} onClick={(e) => setCorrectOption(e.target.value)} />
+                                                            <Label style={{ verticalAlign: "top", color: "#EEEEEE" }} htmlFor="correct">Correct</Label>
                                                         </div>
                                                     ))}
                                                     <div style={{ width: "100%", padding: "10px 5px", margin: "auto", textAlign: "center" }}>
