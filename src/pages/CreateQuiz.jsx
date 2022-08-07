@@ -89,23 +89,15 @@ const CreateQuiz = () => {
         console.log(inputOption);
 
         setOptions(inputOption);
-        console.log(options)
         const newQuestion = {
             options: inputOption,
             correctOption: correctOption,
         };
-
-        await fetch("http://localhost:5000/examquestion/add", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newQuestion),
-        })
-            .catch(error => {
-                window.alert(error);
-                return;
-            });
+        console.log(newQuestion)
+        axios.post("http://localhost:5000/examquestions/", newQuestion).then((response) => {
+            console.log(response.status);
+            console.log(response.data);
+        });
 
     }
 
@@ -140,10 +132,6 @@ const CreateQuiz = () => {
         console.log(data);
     }
 
-    const countPlus=()=>{
-        setCount = count+1;
-    }
-
 
     return (
         <>
@@ -162,12 +150,12 @@ const CreateQuiz = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {examDatas.map((exam,index) => (
-                                    <TableRow                                     
+                                {examDatas.map((exam, index) => (
+                                    <TableRow
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
                                         <TableCell component="th" scope="exam" style={{ color: "#222831", fontSize: "16px", fontWeight: "600", padding: "25px" }}>
-                                            <Label>{(index+1)+ " ) "}{exam.questionTitle}</Label>                           
+                                            <Label>{(index + 1) + " ) "}{exam.questionTitle}</Label>
                                             {exam.options.map((option) => (
                                                 <>
                                                     <br /><Check type="radio" name={`${count}`} />
