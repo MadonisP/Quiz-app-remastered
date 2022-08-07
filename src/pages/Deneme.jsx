@@ -1,85 +1,61 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
- 
-const Exam = (props) => (
- <tr>
-   <td>{props.Exam.name}</td>
-   <td>{props.Exam.position}</td>
-   <td>{props.Exam.level}</td>
-   <td>
-     <Link className="btn btn-link" to={`/edit/${props.Exam._id}`}>Edit</Link> |
-     <button className="btn btn-link"
-       onClick={() => {
-         props.deleteExam(props.Exam._id);
-       }}
-     >
-       Delete
-     </button>
-   </td>
- </tr>
-);
- 
-export default function ExamList() {
- const [exams, setExams] = useState([]);
- 
- // This method fetches the records from the database.
- useEffect(() => {
-   async function getExams() {
-     const response = await fetch(`http://localhost:5000/examquestions/`);
- 
-     if (!response.ok) {
-       const message = `An error occurred: ${response.statusText}`;
-       window.alert(message);
-       return;
-     }
- 
-     const records = await response.json();
-     setExams(records);
-   }
- 
-   getExams();
- 
-   return;
- }, [exams.length]);
- 
- // This method will delete a record
- async function deleteExam(id) {
-   await fetch(`http://localhost:5000/${id}`, {
-     method: "DELETE"
-   });
- 
-   const newRecords = exams.filter((el) => el._id !== id);
-   setExams(newRecords);
- }
- 
- // This method will map out the records on the table
- function examList() {
-   return exams.map((exam) => {
-     return (
-       <Exam
-         exam={exam}
-         deleteExam={() => deleteExam(exam._id)}
-         key={exam._id}
-       />
-     );
-   });
- }
- 
- // This following section will display the table with the records of individuals.
- return (
-   <div>
-     <h3>Question List</h3>
-     <table  style={{ marginTop: 20 }}>
-       <thead>
-         <tr>
-           <th>Name</th>
-           <th>Position</th>
-           <th>Level</th>
-           <th>Action</th>
-         </tr>
-       </thead>
-       <tbody>{examList()}</tbody>
-     </table>
-   </div>
- );
+import react, { useState } from 'react';
+import { FormGroup, FormControl, InputLabel, Input, Button, styled, Typography } from '@mui/material';
+import { addUser } from '../Service/api';
+import { useNavigate } from 'react-router-dom';
+
+const initialValue = {
+    name: '',
+    username: '',
+    email: '',
+    phone: ''
 }
+
+const Container = styled(FormGroup)`
+    width: 50%;
+    margin: 5% 0 0 25%;
+    & > div {
+        margin-top: 20px;
+`;
+
+const AddUser = () => {
+    const [user, setUser] = useState(initialValue);
+    const { name, username, email, phone } = user;
+    
+    let navigate = useNavigate();
+
+    const onValueChange = (e) => {
+        setUser({...user, [e.target.name]: e.target.value})
+    }
+
+    const addUserDetails = async() => {
+        await addUser(user);
+        navigate('/all');
+    }
+
+    return (
+        <Container>
+            <Typography variant="h4">Add User</Typography>
+            <FormControl>
+                <InputLabel htmlFor="my-input">Name</InputLabel>
+                <Input onChange={(e) => onValueChange(e)} name='name' value={name} id="my-input" />
+            </FormControl>
+            <FormControl>
+                <InputLabel htmlFor="my-input">Username</InputLabel>
+                <Input onChange={(e) => onValueChange(e)} name='username' value={username} id="my-input" />
+            </FormControl>
+            <FormControl>
+                <InputLabel htmlFor="my-input">Email</InputLabel>
+                <Input onChange={(e) => onValueChange(e)} name='email' value={email} id="my-input"/>
+            </FormControl>
+            <FormControl>
+                <InputLabel htmlFor="my-input">Phone</InputLabel>
+                <Input onChange={(e) => onValueChange(e)} name='phone' value={phone} id="my-input" />
+            </FormControl>
+            <FormControl>
+                <Button variant="contained" color="primary" onClick={() => addUserDetails()}>Add User</Button>
+            </FormControl>
+        </Container>
+    )
+}
+
+export default AddUser;
