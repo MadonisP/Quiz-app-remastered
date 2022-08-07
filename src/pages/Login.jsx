@@ -3,8 +3,6 @@ import Footer from '../components/Footer';
 import styled from 'styled-components'
 import {useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../redux/apiCalls";
 
 const Container = styled.div`
 width:100%;
@@ -71,14 +69,10 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch();
-
   const navigate = useNavigate()
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log(email + password)
-    login(dispatch, { email, password });
   };
 
 return (

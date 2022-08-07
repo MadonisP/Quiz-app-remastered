@@ -13,6 +13,7 @@ import { ArrowForward, AddCircle, RemoveCircleOutline } from '@mui/icons-materia
 import Popup from 'reactjs-popup';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router";
+import axios from 'axios'
 
 
 const Container = styled.table`
@@ -28,6 +29,7 @@ const Container = styled.table`
 const Wrapper = styled.div`
   width:86%;
   margin:7%;
+  max-width:1300px;
   `
 
 
@@ -38,6 +40,7 @@ const Check = styled.input`
   `
 const Label = styled.label`
   color:;
+  maxWidth:1400px;
   `
 const Button = styled.button`
 font-size:16px;
@@ -75,6 +78,7 @@ const CreateQuiz = () => {
         { id: uuidv4(), option: '' },
     ]);
     const [examDatas, setExamDatas] = useState([]);
+    const [count, setCount] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
 
     const navigate = useNavigate();
@@ -126,12 +130,18 @@ const CreateQuiz = () => {
     }
 
 
-    useEffect((e) => {
-        getExams(e);
+    useEffect(() => {
+        getExams();
     }, []);
 
-    const getExams = async (e) => {
+    const getExams = async () => {
+        const { data } = await axios.get('http://localhost:5000/examquestions/');
+        setExamDatas(data);
+        console.log(data);
+    }
 
+    const countPlus=()=>{
+        setCount = count+1;
     }
 
 
@@ -152,26 +162,25 @@ const CreateQuiz = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {/*{examDatasCarry.map((exam) => ( */}
-                                <TableRow
-
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell component="th" scope="exam" style={{ color: "#222831", fontSize: "16px", fontWeight: "600", padding: "25px" }}>
-
-                                        <br /><Check type="radio" name="options" value="A" />
-                                        <Label htmlFor="A">first option</Label>
-                                        <br /><Check type="radio" name="options" value="B" />
-                                        <Label htmlFor="B">second option</Label>
-                                        <br /><Check type="radio" name="options" value="C" />
-                                        <Label htmlFor="C">third option</Label>
-                                    </TableCell>
-                                    <TableCell align="right"></TableCell>
-                                    <TableCell align="right"></TableCell>
-                                    <TableCell align="right"></TableCell>
-                                    <TableCell align="right"></TableCell>
-                                </TableRow>
-                                {/* ))} */}
+                                {examDatas.map((exam,index) => (
+                                    <TableRow                                     
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                        <TableCell component="th" scope="exam" style={{ color: "#222831", fontSize: "16px", fontWeight: "600", padding: "25px" }}>
+                                            <Label>{(index+1)+ " ) "}{exam.questionTitle}</Label>                           
+                                            {exam.options.map((option) => (
+                                                <>
+                                                    <br /><Check type="radio" name={`${count}`} />
+                                                    <Label>{option}</Label>
+                                                </>
+                                            ))}
+                                        </TableCell>
+                                        <TableCell align="right"></TableCell>
+                                        <TableCell align="right"></TableCell>
+                                        <TableCell align="right"></TableCell>
+                                        <TableCell align="right"></TableCell>
+                                    </TableRow>
+                                ))}
                             </TableBody>
                             <TableHead>
                                 <TableRow>

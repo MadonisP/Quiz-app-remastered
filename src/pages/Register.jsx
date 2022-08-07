@@ -75,8 +75,8 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     const registered = {
-      firstName: name,
-      lastName: lastName,
+      firstname: name,
+      lastname: lastName,
       email: email,
       password: pass,
     }
