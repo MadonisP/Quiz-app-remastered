@@ -78,10 +78,9 @@ const CreateQuiz = () => {
         { id: uuidv4(), option: '' },
     ]);
     const [examDatas, setExamDatas] = useState([]);
-    const [count, setCount] = useState(1);
+    const [questionTitle, setQuestionTitle] = useState("");
     const [isLoading, setIsLoading] = useState(true);
 
-    const navigate = useNavigate();
 
     const addQuestion = async (e) => {
         e.preventDefault();
@@ -92,6 +91,7 @@ const CreateQuiz = () => {
         const newQuestion = {
             options: inputOption,
             correctOption: correctOption,
+            questionTitle: questionTitle
         };
         console.log(newQuestion)
         axios.post("http://localhost:5000/examquestions/", newQuestion).then((response) => {
@@ -124,7 +124,7 @@ const CreateQuiz = () => {
 
     useEffect(() => {
         getExams();
-    }, []);
+    }, [options]);
 
     const getExams = async () => {
         const { data } = await axios.get('http://localhost:5000/examquestions/');
@@ -158,7 +158,7 @@ const CreateQuiz = () => {
                                             <Label>{(index + 1) + " ) "}{exam.questionTitle}</Label>
                                             {exam.options.map((option) => (
                                                 <>
-                                                    <br /><Check type="radio" name={`${count}`} />
+                                                    <br /><Check type="radio" name={`${index + 1}`} />
                                                     <Label>{option}</Label>
                                                 </>
                                             ))}
@@ -184,7 +184,7 @@ const CreateQuiz = () => {
                                                 </button>
 
                                                 <div style={{ width: "100", borderBottom: "1px solid gray", fontSize: "18px", padding: "5px", color: "white" }}>New Question</div>
-                                                <div style={{ padding: "5px", fontSize: "16px", fontWeight: "500", color: "white" }}>Question:</div>
+                                                <div style={{ padding: "5px", fontSize: "16px", fontWeight: "500", color: "white" }}>Question: <input type="text" onChange={e => setQuestionTitle(e.target.value)} /></div>
                                                 <form onSubmit={addQuestion} style={{ width: "100%", padding: "10px 5px" }}>
                                                     {inputFields.map(inputField => (
                                                         <div key={inputField.id}>

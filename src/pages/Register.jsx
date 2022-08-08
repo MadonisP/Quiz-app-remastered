@@ -80,11 +80,14 @@ const Register = () => {
       email: email,
       password: pass,
     }
+    console.log(registered)
+    axios.post("http://localhost:5000/users/", registered).then((response) => {
+      console.log(response.status);
+      console.log(response.data);
+    });
 
-    axios.post('http://localhost:8000/app/register', registered)
-      .then(response => console.log(response.data))
+    navigate("/login");
 
-    navigate("/login"); 
   }
 
 
