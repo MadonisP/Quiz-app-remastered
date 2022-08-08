@@ -65,14 +65,17 @@ const Dashboard = () => {
     console.log(data);
   }
 
-  const deleteExam = (prop) => {
-    console.log(prop)
-
+  const deleteExam = (id) => {
+    console.log(id)
+    axios.delete(`http://localhost:5000/exam/${id}`).then((response) => {
+            console.log(response.status);
+            console.log(response.data);
+        });
   }
   
   useEffect(() => {
     getExamNames();
-  }, [deleteExam()]);
+  }, []);
 
   const handleName = () => {
 
@@ -136,11 +139,11 @@ const Dashboard = () => {
               <TableBody>
                 {examNameStorage.map((name) => (
                   <TableRow
-                    key={name.examTitle}
+                    key={name.examname}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {name.examTitle}
+                      {name.examname}
                     </TableCell>
                     <TableCell align="right"><Button><BarChart style={{ verticalAlign: "middle", padding: "5px" }} />Analyze</Button></TableCell>
                     <TableCell align="right"><Button><Visibility style={{ verticalAlign: "middle", padding: "5px" }} />Preview</Button></TableCell>
