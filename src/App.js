@@ -19,7 +19,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/create" element={<CreateQuiz />} />
+        <Route path="/create/:id" element={<CreateQuiz />} />
         <Route path="/configure" element={<Configure />} />
       </Routes>
     </div>

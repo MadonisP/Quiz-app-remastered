@@ -12,6 +12,7 @@ import { BarChart, Delete, Edit, Visibility } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import Popup from 'reactjs-popup';
 import axios from 'axios'
+import { Link } from "react-router-dom";
 
 const Container = styled.table`
     width: 100%;
@@ -68,11 +69,11 @@ const Dashboard = () => {
   const deleteExam = (id) => {
     console.log(id)
     axios.delete(`http://localhost:5000/exam/${id}`).then((response) => {
-            console.log(response.status);
-            console.log(response.data);
-        });
+      console.log(response.status);
+      console.log(response.data);
+    });
   }
-  
+
   useEffect(() => {
     getExamNames();
   }, []);
@@ -147,7 +148,7 @@ const Dashboard = () => {
                     </TableCell>
                     <TableCell align="right"><Button><BarChart style={{ verticalAlign: "middle", padding: "5px" }} />Analyze</Button></TableCell>
                     <TableCell align="right"><Button><Visibility style={{ verticalAlign: "middle", padding: "5px" }} />Preview</Button></TableCell>
-                    <TableCell align="right"><Button><Edit style={{ verticalAlign: "middle", padding: "5px" }} />Edit</Button></TableCell>
+                    <TableCell align="right"><Button><Edit style={{ verticalAlign: "middle", padding: "5px" }} /><Link to={`/create/${name._id}`} style={{textDecoration:"none", color:"black"}}>Edit</Link></Button></TableCell>
                     <TableCell align="right"><Button onClick={() => { deleteExam(name._id); }}><Delete style={{ verticalAlign: "middle", padding: "5px" }} />Delete</Button></TableCell>
                   </TableRow>
                 ))}

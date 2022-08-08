@@ -13,6 +13,7 @@ import { ArrowForward, AddCircle, RemoveCircleOutline } from '@mui/icons-materia
 import Popup from 'reactjs-popup';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router";
+import { useParams } from 'react-router-dom'
 import axios from 'axios'
 
 
@@ -25,14 +26,11 @@ const Container = styled.table`
       overflow: hidden;
       background-color:#EEEEEE;
   `;
-
 const Wrapper = styled.div`
   width:86%;
   margin:7%;
   max-width:1300px;
   `
-
-
 const Check = styled.input`
   transform : scale(1.5);
     margin:20px;
@@ -55,7 +53,6 @@ cursor: pointer;
     background-color: #228CE9;
   }
   `
-
 const NextButton = styled.button`
 font-size:16px;
 margin:10px;
@@ -69,14 +66,14 @@ cursor: pointer;
     background-color: #75DB75;
   }
   `
-
 const CreateQuiz = () => {
+
+    const params = useParams();
+    const id = params;
 
     const [options, setOptions] = useState([]);
     const [correctOption, setCorrectOption] = useState();
-    const [inputFields, setInputFields] = useState([
-        { id: uuidv4(), option: '' },
-    ]);
+    const [inputFields, setInputFields] = useState([{ id: uuidv4(), option: '' }]);
     const [examDatas, setExamDatas] = useState([]);
     const [questionTitle, setQuestionTitle] = useState("");
     const [isLoading, setIsLoading] = useState(true);
@@ -89,6 +86,7 @@ const CreateQuiz = () => {
 
         setOptions(inputOption);
         const newQuestion = {
+            examId: id.id,
             options: inputOption,
             correctOption: correctOption,
             questionTitle: questionTitle
@@ -121,13 +119,13 @@ const CreateQuiz = () => {
         setInputFields(values);
     }
 
-
     useEffect(() => {
         getExams();
+        console.log(id.id)
     }, [options]);
 
     const getExams = async () => {
-        const { data } = await axios.get('http://localhost:5000/examquestions/');
+        const { data } = await axios.get('http://localhost:5000/examquestions/'+id.id);
         setExamDatas(data);
         console.log(data);
     }
