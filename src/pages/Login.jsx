@@ -30,7 +30,6 @@ padding-top:100px;
 padding-bottom:20px;
 border-bottom: 1px solid rgba(0,0,0,.25);
 `
-
 const Form = styled.form`
 display: flex;
 flex-wrap: wrap;
