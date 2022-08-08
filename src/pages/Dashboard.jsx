@@ -9,23 +9,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { BarChart, Delete, Edit, Visibility } from "@mui/icons-material";
-import { useContext, useEffect, useState } from "react";
-import { collection, query, where, getDocs, addDoc  } from "firebase/firestore";
-import { db } from "../FirebaseConfig"
-import { AuthContext } from "../context/AuthContext"
+import { useEffect, useState } from "react";
 import Popup from 'reactjs-popup';
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Deneme sınavı 1', 159, 6.0, 24, 4.0),
-  createData('Deneme sınavı 2', 237, 9.0, 37, 4.3),
-  createData('Deneme sınavı 3', 262, 16.0, 24, 6.0),
-  createData('Deneme sınavı 4', 305, 3.7, 67, 4.3),
-  createData('Deneme sınavı 5', 356, 16.0, 49, 3.9),
-];
+import axios from 'axios'
 
 const Container = styled.table`
     width: 100%;
@@ -69,17 +55,29 @@ cursor: pointer;
 const Dashboard = () => {
 
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [examName, setExamName] = useState("");
-  const { currentUser } = useContext(AuthContext);
+  const [examNameStorage, setExamNameStorage] = useState([]);
 
-  const getExamNames =  () => {
+  const getExamNames = async () => {
+    const { data } = await axios.get('http://localhost:5000/exam/');
+    setExamNameStorage(data);
+    console.log(data);
+  }
+
+  const deleteExam = (prop) => {
+    console.log(prop)
 
   }
+  
+  useEffect(() => {
+    getExamNames();
+  }, [deleteExam()]);
 
   const handleName = () => {
-  
+
   }
+
 
   if (isLoading) {
     return (
@@ -136,18 +134,18 @@ const Dashboard = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
+                {examNameStorage.map((name) => (
                   <TableRow
-                    key={row.name}
+                    key={name.examTitle}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {row.name}
+                      {name.examTitle}
                     </TableCell>
                     <TableCell align="right"><Button><BarChart style={{ verticalAlign: "middle", padding: "5px" }} />Analyze</Button></TableCell>
                     <TableCell align="right"><Button><Visibility style={{ verticalAlign: "middle", padding: "5px" }} />Preview</Button></TableCell>
                     <TableCell align="right"><Button><Edit style={{ verticalAlign: "middle", padding: "5px" }} />Edit</Button></TableCell>
-                    <TableCell align="right"><Button><Delete style={{ verticalAlign: "middle", padding: "5px" }} />Delete</Button></TableCell>
+                    <TableCell align="right"><Button onClick={() => { deleteExam(name._id); }}><Delete style={{ verticalAlign: "middle", padding: "5px" }} />Delete</Button></TableCell>
                   </TableRow>
                 ))}
               </TableBody>

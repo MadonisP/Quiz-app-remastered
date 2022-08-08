@@ -1,8 +1,9 @@
 import Navbar from "../components/Navbar";
 import Footer from '../components/Footer';
 import styled from 'styled-components'
-import {useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
 
 const Container = styled.div`
 width:100%;
@@ -73,28 +74,38 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    
+    const userCheck = {
+      email: email,
+      password: password,
+    };
+    console.log(userCheck)
+    axios.post("http://localhost:5000/users/login", userCheck).then((response) => {
+      console.log(response.status);
+      console.log(response.data);
+    });
+
+    navigate("/dashboard")
   };
 
-return (
-  <>
-    <Navbar />
-    <Container>
-      <Wrapper>
-        <HeroTitle>Login</HeroTitle>
-        <FormWrapper>
-          <Form onSubmit={handleLogin}>
-            <Input placeholder="Email" type="email" onChange={e => setEmail(e.target.value)} required />
-            <Input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)} required />
-            <Button type="submit">Login</Button>
-            <Link href="/register">Create a new account</Link>
-          </Form>
-        </FormWrapper>
-      </Wrapper>
-    </Container>
-    <Footer />
-  </>
-)
+  return (
+    <>
+      <Navbar />
+      <Container>
+        <Wrapper>
+          <HeroTitle>Login</HeroTitle>
+          <FormWrapper>
+            <Form onSubmit={handleLogin}>
+              <Input placeholder="Email" type="email" onChange={e => setEmail(e.target.value)} required />
+              <Input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)} required />
+              <Button type="submit">Login</Button>
+              <Link href="/register">Create a new account</Link>
+            </Form>
+          </FormWrapper>
+        </Wrapper>
+      </Container>
+      <Footer />
+    </>
+  )
 }
 
 export default Login
