@@ -4,6 +4,7 @@ export const userSlice = createSlice({
     name: "user",
     initialState: {
         value: null,
+        //  currentUser: localStorage.setItem("user", JSON.stringify(state.currentUser)); || null,
     },
     reducers: {
         login: (state, action) => {

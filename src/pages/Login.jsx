@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
+import { useSelector,useDispatch } from "react-redux";
 
 const Container = styled.div`
 width:100%;
