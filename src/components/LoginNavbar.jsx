@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Link } from "react-router-dom";
 import { Help, Logout } from '@mui/icons-material';
 import { useDispatch } from "react-redux";
-
+import { logoutD } from "../redux/apiCalls";
 
 const Container = styled.div`
 height:60px;
@@ -70,7 +70,7 @@ const LoginNavbar = () => {
     const dispatch = useDispatch();
 
     const handleLogout = () => {
-        dispatch({ type: "LOGOUT" })
+        logoutD(dispatch)
     }
 
     return (

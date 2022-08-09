@@ -11,8 +11,14 @@ import { useSelector } from "react-redux";
 
 
 function App() {
-  const userId = useSelector((state) => state.user.currentUser.user._id);
+  const userId = useSelector((state) => state.user.currentUser);
   console.log(userId)
+  if(userId==null){
+     console.log("no auth")
+  }else{
+     console.log(userId.user._id)
+  }
+
   return (
     <div>
       <Routes>
