@@ -23,12 +23,10 @@ const Container = styled.table`
     overflow: hidden;
     background-color:#EEEEEE;
 `;
-
 const Wrapper = styled.caption`
 width:90%;
 margin:5%;
 `
-
 const Button = styled.button`
 background-color:#EEEEEE;
 color:#393E46;
@@ -37,7 +35,6 @@ border-radius:15px;
 font-size:14px;
 cursor: pointer;
 `
-
 const CreateButton = styled.button`
 font-size:26px;
 font-weight:600;
@@ -52,11 +49,9 @@ cursor: pointer;
   background-color: #55B4BA;
 }
 `
-
 const Dashboard = (CUId) => {
 
-
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [examName, setExamName] = useState("");
   const [examNameStorage, setExamNameStorage] = useState([]);
 
@@ -64,6 +59,7 @@ const Dashboard = (CUId) => {
     const { data } = await axios.get(`http://localhost:5000/exam/${CUId.CUId}`);
     setExamNameStorage(data);
     console.log(data);
+    setIsLoading(false);
   }
 
   const deleteExam = (id) => {
@@ -76,8 +72,7 @@ const Dashboard = (CUId) => {
 
   useEffect(() => {
     getExamNames();
-    
-  }, []);
+  }, [examName]);
 
   const handleName = (e) => {
     e.preventDefault();
@@ -90,6 +85,10 @@ const Dashboard = (CUId) => {
       console.log(response.status);
       console.log(response.data);
     });
+  }
+
+  const goToExam = () => {
+
   }
 
 
@@ -157,8 +156,8 @@ const Dashboard = (CUId) => {
                       {name.examname}
                     </TableCell>
                     <TableCell align="right"><Button><BarChart style={{ verticalAlign: "middle", padding: "5px" }} />Analyze</Button></TableCell>
-                    <TableCell align="right"><Button><Visibility style={{ verticalAlign: "middle", padding: "5px" }} />Preview</Button></TableCell>
-                    <TableCell align="right"><Button><Edit style={{ verticalAlign: "middle", padding: "5px" }} /><Link to={`/create/${name._id}`} style={{ textDecoration: "none", color: "black" }}>Edit</Link></Button></TableCell>
+                    <TableCell align="right"><Link to={`/quiz/${name._id}`}><Button><Visibility style={{ verticalAlign: "middle", padding: "5px" }} />Preview</Button></Link></TableCell>
+                    <TableCell align="right"><Link to={`/create/${name._id}`}><Button ><Edit style={{ verticalAlign: "middle", padding: "5px" }} />Edit</Button></Link></TableCell>
                     <TableCell align="right"><Button onClick={() => { deleteExam(name._id); }}><Delete style={{ verticalAlign: "middle", padding: "5px" }} />Delete</Button></TableCell>
                   </TableRow>
                 ))}

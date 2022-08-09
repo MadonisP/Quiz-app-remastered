@@ -36,6 +36,7 @@ function App() {
         <Route path="/dashboard" element={<RequireAuth><Dashboard CUId={currentUserUid}/></RequireAuth>} />
         <Route path="/create/:id" element={<RequireAuth><CreateQuiz /></RequireAuth>} />
         <Route path="/configure" element={<RequireAuth><Configure /></RequireAuth>} />
+       
       </Routes>
     </div>
   );
