@@ -53,7 +53,7 @@ cursor: pointer;
 }
 `
 
-const Dashboard = () => {
+const Dashboard = (CUId) => {
 
 
   const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +61,7 @@ const Dashboard = () => {
   const [examNameStorage, setExamNameStorage] = useState([]);
 
   const getExamNames = async () => {
-    const { data } = await axios.get('http://localhost:5000/exam/');
+    const { data } = await axios.get(`http://localhost:5000/exam/${CUId.CUId}`);
     setExamNameStorage(data);
     console.log(data);
   }
@@ -76,10 +76,20 @@ const Dashboard = () => {
 
   useEffect(() => {
     getExamNames();
+    
   }, []);
 
-  const handleName = () => {
-
+  const handleName = (e) => {
+    e.preventDefault();
+    const newExam = {
+      creatorUserId: CUId.CUId,
+      examname: examName,
+    };
+    console.log(newExam)
+    axios.post("http://localhost:5000/exam/", newExam).then((response) => {
+      console.log(response.status);
+      console.log(response.data);
+    });
   }
 
 
@@ -148,7 +158,7 @@ const Dashboard = () => {
                     </TableCell>
                     <TableCell align="right"><Button><BarChart style={{ verticalAlign: "middle", padding: "5px" }} />Analyze</Button></TableCell>
                     <TableCell align="right"><Button><Visibility style={{ verticalAlign: "middle", padding: "5px" }} />Preview</Button></TableCell>
-                    <TableCell align="right"><Button><Edit style={{ verticalAlign: "middle", padding: "5px" }} /><Link to={`/create/${name._id}`} style={{textDecoration:"none", color:"black"}}>Edit</Link></Button></TableCell>
+                    <TableCell align="right"><Button><Edit style={{ verticalAlign: "middle", padding: "5px" }} /><Link to={`/create/${name._id}`} style={{ textDecoration: "none", color: "black" }}>Edit</Link></Button></TableCell>
                     <TableCell align="right"><Button onClick={() => { deleteExam(name._id); }}><Delete style={{ verticalAlign: "middle", padding: "5px" }} />Delete</Button></TableCell>
                   </TableRow>
                 ))}

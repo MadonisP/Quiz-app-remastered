@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import storage from "redux-persist/lib/storage";
 
 const userSlice = createSlice({
   name: "user",
@@ -19,8 +20,8 @@ const userSlice = createSlice({
       state.isFetching = false;
       state.error = true;
     },
-    logout: (state) => {
-      state.currentUser = null;
+    logout: () => {
+      storage.removeItem('persist:root')
     },
   },
 });
