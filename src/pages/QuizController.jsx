@@ -1,49 +1,37 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Quiz from "../components/quizHandler/Quiz";
 import Result from "../components/quizHandler/Result";
+import { useParams } from 'react-router-dom'
 
-function App() {
+const QuizController = () => {
+
     const [questions, setQuestions] = useState();
-    const [name, setName] = useState();
     const [score, setScore] = useState(0);
+    const params = useParams();
+    const id = params;
 
-    const { data } = await axios.get(
-        `https://opentdb.com/api.php?amount=10${category && `&category=${category}`
-        }${difficulty && `&difficulty=${difficulty}`}&type=multiple`
-    );
-    setQuestions(data.results);
+    useEffect(() => {
+        getExams();
+    }, [])
 
+    const getExams = async () => {
+        const { data } = await axios.get('http://localhost:5000/examquestions/' + id.id);
+        setQuestions(data);
+        console.log(data[0].options);
+    }
 
     return (
-        <BrowserRouter>
-            <div className="app" style={{ backgroundImage: 'url("/ques1.png")' }}>
-                <Header />
-                <Switch>
-                    <Route path="/" exact>
-                        <Home
-                            name={name}
-                            setName={setName}
-                            fetchQuestions={fetchQuestions}
-                        />
-                    </Route>
-                    <Route path="/quiz">
-                        <Quiz
-                            name={name}
-                            questions={questions}
-                            score={score}
-                            setScore={setScore}
-                            setQuestions={setQuestions}
-                        />
-                    </Route>
-                    <Route path="/result">
-                        <Result name={name} score={score} />
-                    </Route>
-                </Switch>
-            </div>
-            <Footer />
-        </BrowserRouter>
+        <div>
+            <Quiz
+                questions={questions}
+                score={score}
+                setScore={setScore}
+                setQuestions={setQuestions}
+            />
+        </div>
     );
 }
 
-export default App;
+//    <Result score={score} />
+export default QuizController;

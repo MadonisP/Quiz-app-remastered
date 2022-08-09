@@ -55,6 +55,7 @@ const Dashboard = (CUId) => {
   const [examName, setExamName] = useState("");
   const [examNameStorage, setExamNameStorage] = useState([]);
 
+
   const getExamNames = async () => {
     const { data } = await axios.get(`http://localhost:5000/exam/${CUId.CUId}`);
     setExamNameStorage(data);

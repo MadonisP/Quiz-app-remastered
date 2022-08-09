@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import CreateQuiz from "./pages/CreateQuiz";
 import Configure from "./pages/Configure";
 import { useSelector } from "react-redux";
+import QuizController from "./pages/QuizController";
 
 
 
@@ -33,10 +34,10 @@ function App() {
         <Route index element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<RequireAuth><Dashboard CUId={currentUserUid}/></RequireAuth>} />
+        <Route path="/dashboard" element={<RequireAuth><Dashboard CUId={currentUserUid} /></RequireAuth>} />
         <Route path="/create/:id" element={<RequireAuth><CreateQuiz /></RequireAuth>} />
         <Route path="/configure" element={<RequireAuth><Configure /></RequireAuth>} />
-       
+        <Route path="/quiz/:id" element={<RequireAuth><QuizController /></RequireAuth>} />
       </Routes>
     </div>
   );
