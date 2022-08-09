@@ -6,11 +6,13 @@ import LoginNavbar from "./components/LoginNavbar";
 import Dashboard from "./pages/Dashboard";
 import CreateQuiz from "./pages/CreateQuiz";
 import Configure from "./pages/Configure";
+import { useSelector } from "react-redux";
 
 
 
 function App() {
-
+  const userId = useSelector((state) => state.user.currentUser.user._id);
+  console.log(userId)
   return (
     <div>
       <Routes>

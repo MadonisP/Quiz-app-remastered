@@ -4,7 +4,8 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
-import { useSelector,useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/apiCalls";
 
 const Container = styled.div`
 width:100%;
@@ -71,6 +72,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate()
+  const dispatch = useDispatch();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -78,13 +80,17 @@ const Login = () => {
       email: email,
       password: password,
     };
-    console.log(userCheck)
-    axios.post("http://localhost:5000/users/login", userCheck).then((response) => {
-      console.log(response.status);
-      console.log(response.data);
-    });
-
-    navigate("/dashboard")
+    try {
+      axios.post("http://localhost:5000/users/login", userCheck).then((response) => {
+        console.log(response.status);
+        console.log(response.data);
+        login(dispatch, { email, password });
+        console.log("data suc")
+        navigate("/dashboard")
+      });
+    } catch {
+      alert("yanlış kullanıcı ismi ve/veya şifre")
+    }
   };
 
   return (

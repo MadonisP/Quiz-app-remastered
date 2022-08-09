@@ -1,27 +1,24 @@
-import {useContext} from "react"
 import styled from 'styled-components'
 import { Link } from "react-router-dom";
 import { Help, Logout } from '@mui/icons-material';
-import {AuthContext} from '../context/AuthContext'
+import { useDispatch } from "react-redux";
+
 
 const Container = styled.div`
 height:60px;
 background-color:#393E46;
 `
-
 const Wrapper = styled.div`
 padding:0px 20px;
 display:flex;
 align-items:center;
 justify-content:space-between
 `
-
 const Left = styled.div`
 flex: 1;
 display: flex;
 align-items: center;
 `
-
 const Logo = styled.div`
 font-family: 'Square Peg', cursive;
 font-size:32px;
@@ -31,7 +28,6 @@ color:#00ADB5;
 margin-left:10%;
 padding:10px 12px;
 `
-
 const MenuItem = styled.button`
 font-size: 14px;
 cursor: pointer;
@@ -43,14 +39,12 @@ border:none;
     background-color: #222831;
   }
 `
-
 const Right = styled.div`
 flex:1;
 display:flex;
 align-items: center;
 justify-content:flex-end;
 `
-
 const MenuItemFirst = styled.div`
 width:80px;
 margin-right:10%;
@@ -61,7 +55,6 @@ padding:10px;
     color: #EEEEEE;
   }
 `
-
 const MenuItemSecond = styled.div`
 cursor: pointer;
 color:#B5B5B6;
@@ -74,9 +67,7 @@ padding:10px;
 
 const LoginNavbar = () => {
 
-    const { currentUser } = useContext(AuthContext)
-
-    const { dispatch } = useContext(AuthContext)
+    const dispatch = useDispatch();
 
     const handleLogout = () => {
         dispatch({ type: "LOGOUT" })
