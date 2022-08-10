@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const Result = ({ score }) => {
   const navigate = useNavigate()
-
+  console.log(score)
   return (
     <div className="result">
       <span className="title">Final Score : {score}</span>

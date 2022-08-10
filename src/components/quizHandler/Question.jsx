@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "./ErrorMessage";
 import styled from "styled-components"
 
@@ -9,7 +9,6 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
 `
-
 const SingleQuestion = styled.div`
   width: 95%;
   min-height: 350px;
@@ -21,7 +20,6 @@ const SingleQuestion = styled.div`
   padding: 20px;
   margin-top: 10px;
 `
-
 const Options = styled.div`
   width: 100%;
   display: flex;
@@ -31,7 +29,6 @@ const Options = styled.div`
   justify-content: space-around;
   margin: 10px;
 `
-
 const SingleOption = styled.button`
   width: 46%;
   height: 50px;
@@ -39,26 +36,21 @@ const SingleOption = styled.button`
   margin: 10px;
   box-shadow: 0 0 2px black;
 `
-
 const Control = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-around;
 `
-
-const Select = styled.div
-  `
+const Select = styled.div `
   background-color: rgb(7, 207, 0);
   color: white;
   box-shadow: 0 0 1px black;
 `
-
 const Wrong = styled.div`
   background-color: rgb(233, 0, 0);
   color: white;
   box-shadow: 0 0 1px black;
 `
-
 
 const Question = ({
   currQues,
@@ -72,7 +64,7 @@ const Question = ({
 }) => {
   const [selected, setSelected] = useState();
   const [error, setError] = useState(false);
-
+  console.log(questions.length)
   const navigate = useNavigate()
 
   const handleSelect = (i) => {
@@ -88,7 +80,7 @@ const Question = ({
   };
 
   const handleNext = () => {
-    if (currQues > questions.length) {
+    if (currQues >= (questions.length - 1)) {
       navigate('/result');
     } else if (selected) {
       setCurrQues(currQues + 1);
@@ -96,14 +88,13 @@ const Question = ({
     } else setError("Please select an option first");
   };
 
-  console.log("options "+options)
-  console.log("corAns "+correct)
-  console.log("questions "+questions[0].questionTitle)
+  console.log("options " + options)
+  console.log("corAns " + correct)
+  console.log("questions " + questions[0].questionTitle)
 
   return (
     <Container>
       <h1>Question {currQues + 1} :</h1>
-
       <SingleQuestion>
         <h2>{questions[currQues].questionTitle}</h2>
         <Options>
@@ -125,9 +116,8 @@ const Question = ({
             color="primary"
             size="large"
             style={{ width: 185 }}
-            onClick={handleNext}
-          >
-            {currQues > questions.length ? "Submit" : "Next Question"}
+            onClick={handleNext}>
+            {currQues >= (questions.length - 1) ? "Submit" : "Next Question"}
           </button>
         </Control>
       </SingleQuestion>
