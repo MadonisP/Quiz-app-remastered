@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "./ErrorMessage";
 import styled from "styled-components"
+import { useParams } from 'react-router-dom'
+import axios from 'axios'
 
 const Container = styled.div`
   width: 100%;
@@ -41,7 +43,7 @@ const Control = styled.div`
   width: 100%;
   justify-content: space-around;
 `
-const Select = styled.div `
+const Select = styled.div`
   background-color: rgb(7, 207, 0);
   color: white;
   box-shadow: 0 0 1px black;
@@ -61,11 +63,15 @@ const Question = ({
   setScore,
   score,
   setQuestions,
+  userId
 }) => {
   const [selected, setSelected] = useState();
   const [error, setError] = useState(false);
   console.log(questions.length)
   const navigate = useNavigate()
+
+  const params = useParams();
+  const id = params;
 
   const handleSelect = (i) => {
     if (selected === i && selected === correct) return "select";
@@ -92,6 +98,21 @@ const Question = ({
   console.log("corAns " + correct)
   console.log("questions " + questions[0].questionTitle)
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const userExam = {
+      userId: userId,
+      examId: id.id,
+      grade: score,
+    };
+
+    console.log(userExam)
+    axios.patch(`http://localhost:5000/userexams/${userId}`, userExam).then((response) => {
+      console.log(response.status);
+      console.log(response.data);
+    });
+  }
+
   return (
     <Container>
       <h1>Question {currQues + 1} :</h1>
@@ -104,8 +125,7 @@ const Question = ({
               <button className={`singleOption  ${selected && handleSelect(i)}`}
                 key={i}
                 onClick={() => handleCheck(i)}
-                disabled={selected}
-              >
+                disabled={selected}>
                 {i}
               </button>
             ))}
@@ -117,7 +137,7 @@ const Question = ({
             size="large"
             style={{ width: 185 }}
             onClick={handleNext}>
-            {currQues >= (questions.length - 1) ? "Submit" : "Next Question"}
+            {currQues >= (questions.length - 1) ? (<Link to="/result" style={{ color: "black" }} onClick={handleSubmit} >Submit</Link>) : "Next Question"}
           </button>
         </Control>
       </SingleQuestion>

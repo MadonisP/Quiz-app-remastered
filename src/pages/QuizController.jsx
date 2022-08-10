@@ -6,8 +6,9 @@ import { useParams } from 'react-router-dom'
 import LoginNavbar from "../components/LoginNavbar";
 import Footer from "../components/Footer";
 
-const QuizController = () => {
+const QuizController = (CUId) => {
 
+    const userId = CUId.CUId
     const [questions, setQuestions] = useState();
     const [score, setScore] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
@@ -16,13 +17,40 @@ const QuizController = () => {
 
     useEffect(() => {
         getExams();
+        userCheck();
+
     }, [])
 
     const getExams = async () => {
         const { data } = await axios.get('http://localhost:5000/examquestions/' + id.id);
         setQuestions(data);
         console.log(data)
-        setIsLoading(false);
+    }
+
+    const securityData = () => {
+        const dummyData = {
+            userId: CUId.CUId,
+            examId: "dummyId",
+        };
+        console.log(dummyData)
+        axios.post("http://localhost:5000/userexams/", dummyData).then((response) => {
+            console.log(response.status);
+            console.log(response.data);
+        });
+    }
+
+    const userCheck = async () => {
+        try {
+            const { data } = await axios.get('http://localhost:5000/userexams/' + CUId.CUId);
+            if (data.length > 0) {
+                alert("you have already took this exam")
+            } else {
+                setIsLoading(false);
+                securityData();
+            }
+        } catch {
+            alert("you have already took this exam")
+        }
     }
 
     if (isLoading) {
@@ -41,6 +69,7 @@ const QuizController = () => {
                 score={score}
                 setScore={setScore}
                 setQuestions={setQuestions}
+                userId={userId}
             />
             <Footer />
         </div>

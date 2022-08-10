@@ -37,7 +37,7 @@ function App() {
         <Route path="/dashboard" element={<RequireAuth><Dashboard CUId={currentUserUid} /></RequireAuth>} />
         <Route path="/create/:id" element={<RequireAuth><CreateQuiz /></RequireAuth>} />
         <Route path="/configure" element={<RequireAuth><Configure /></RequireAuth>} />
-        <Route path="/quiz/:id" element={<RequireAuth><QuizController /></RequireAuth>} />
+        <Route path="/quiz/:id" element={<RequireAuth><QuizController CUId={currentUserUid}/></RequireAuth>} />
         <Route path="/result" element={<RequireAuth><Result /></RequireAuth>} />
       </Routes>
     </div>
