@@ -2,7 +2,6 @@ import Home from "./pages/Home";
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import LoginNavbar from "./components/LoginNavbar";
 import Dashboard from "./pages/Dashboard";
 import CreateQuiz from "./pages/CreateQuiz";
 import Configure from "./pages/Configure";

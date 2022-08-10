@@ -82,8 +82,11 @@ const CreateQuiz = () => {
     const addQuestion = async (e) => {
         e.preventDefault();
         const inputOption = await Promise.all(inputFields.map((inputF) => inputF.option))
+        /* const index = inputOption.indexOf(correctOption)
+        if (index > -1) {
+            inputOption.splice(index, 1);
+        } */
         console.log(inputOption);
-
         setOptions(inputOption);
         const newQuestion = {
             examId: id.id,
@@ -98,6 +101,11 @@ const CreateQuiz = () => {
         });
 
     }
+
+    const removeCorrect = (inputOption) => {
+
+
+    };
 
     const handleChangeInput = async (id, event) => {
         const newInputFields = await Promise.all(inputFields.map(i => {
@@ -125,7 +133,7 @@ const CreateQuiz = () => {
     }, [options]);
 
     const getExams = async () => {
-        const { data } = await axios.get('http://localhost:5000/examquestions/'+id.id);
+        const { data } = await axios.get('http://localhost:5000/examquestions/' + id.id);
         setExamDatas(data);
         console.log(data);
     }

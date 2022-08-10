@@ -4,12 +4,8 @@ import Question from "./Question";
 
 const Quiz = ({ questions, score, setScore, setQuestions }) => {
     const [options, setOptions] = useState();
-    const [currQues, setCurrQues] = useState(1);
-    const [incorrectAnswers, setIncorrectAnswers] = useState([]);
+    const [currQues, setCurrQues] = useState(0);
 
-    useEffect(() => {
-        handleSlide();
-    }, []);
 
     useEffect(() => {
         setOptions(
@@ -18,21 +14,7 @@ const Quiz = ({ questions, score, setScore, setQuestions }) => {
                 questions[currQues]?.options,
             ])
         );
-        console.log(options)
     }, [currQues, questions]);
-
-    const handleSlide = () => {
-        for (let i = 0; i <= questions?.length; i++) {
-            const find = questions[i].options.indexOf(questions[i].correctOption)
-            if (find > -1) {
-                questions[i].options.splice(questions[i].correctOption, 1)
-                setIncorrectAnswers(questions[i].options);
-            }
-        }
-        console.log(questions)
-    }
-
-
 
     const handleShuffle = (options) => {
         return options.sort(() => Math.random() - 0.5);
@@ -52,7 +34,7 @@ const Quiz = ({ questions, score, setScore, setQuestions }) => {
                         setCurrQues={setCurrQues}
                         questions={questions}
                         options={options}
-                        correct={questions[currQues]?.correct_answer}
+                        correct={questions[currQues]?.correctOption}
                         score={score}
                         setScore={setScore}
                         setQuestions={setQuestions}
