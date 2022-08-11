@@ -32,7 +32,6 @@ const QuizController = (CUId) => {
             userId: CUId.CUId,
             examId: "dummyId",
         };
-        console.log(dummyData)
         axios.post("http://localhost:5000/userexams/", dummyData).then((response) => {
             console.log(response.status);
             console.log(response.data);
@@ -42,12 +41,15 @@ const QuizController = (CUId) => {
     const userCheck = async () => {
         try {
             const { data } = await axios.get('http://localhost:5000/userexams/' + CUId.CUId);
-            if (data.length > 0) {
-                alert("you have already took this exam")
-            } else {
-                setIsLoading(false);
-                securityData();
+
+            for (let i = 0; i <= data.length; i++) {
+                if (data[i]?.examId === id.id) {// buradaki "?" neden oluyor hattaya!
+                    alert("you have already took this exam")
+                }
             }
+            setIsLoading(false);
+            securityData();
+            
         } catch {
             alert("you have already took this exam")
         }

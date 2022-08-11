@@ -47,11 +47,4 @@ const Quiz = ({ questions, score, setScore, setQuestions, userId }) => {
         </div>
     );
 };
-/* <CircularProgress
-style={{ margin: 100 }}
-color="inherit"
-size={150}
-thickness={1}
-/>
-*/
 export default Quiz;

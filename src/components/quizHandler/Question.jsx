@@ -94,9 +94,6 @@ const Question = ({
     } else setError("Please select an option first");
   };
 
-  console.log("options " + options)
-  console.log("corAns " + correct)
-  console.log("questions " + questions[0].questionTitle)
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import QuizController from "./pages/QuizController";
 import Result from "./components/quizHandler/Result";
 import Anlyze from "./pages/Anlyze";
+import Reports from "./pages/Reports";
 
 
 
@@ -36,6 +37,7 @@ function App() {
         <Route path="/dashboard" element={<RequireAuth><Dashboard CUId={currentUserUid} /></RequireAuth>} />
         <Route path="/create/:id" element={<RequireAuth><CreateQuiz /></RequireAuth>} />
         <Route path="/configure" element={<RequireAuth><Configure /></RequireAuth>} />
+        <Route path="/reports" element={<RequireAuth><Reports /></RequireAuth>} />
         <Route path="/anlyze/:id" element={<RequireAuth><Anlyze CUId={currentUserUid} /></RequireAuth>} />
         <Route path="/quiz/:id" element={<RequireAuth><QuizController CUId={currentUserUid} /></RequireAuth>} />
         <Route path="/result/:id" element={<RequireAuth><Result /></RequireAuth>} />

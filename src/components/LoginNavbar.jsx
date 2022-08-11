@@ -81,7 +81,9 @@ const LoginNavbar = () => {
                     <Link to="/dashboard">
                         <MenuItem>Dashboard</MenuItem>
                     </Link>
-                    <MenuItem>Reports</MenuItem>
+                    <Link to="/reports">
+                        <MenuItem>Reports</MenuItem>
+                    </Link>
                 </Left>
                 <Right>
                     <Link to="/help" style={{ textDecoration: "none" }}>
