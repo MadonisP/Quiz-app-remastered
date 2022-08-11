@@ -1,71 +1,118 @@
 import Footer from '../components/Footer'
 import LoginNavbar from '../components/LoginNavbar'
+import styled from 'styled-components'
+import { useParams } from 'react-router-dom'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 
-const Anlyze = () => {
+const Container = styled.div`
+height:100%;
+margin: 4% 7%;
+`
+const Table = styled.table`
+font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+`
+const Td = styled.td`
+border: 1px solid #ddd;
+  padding: 8px;
+`
+const Th = styled.th`
+    border: 1px solid #ddd;
+  padding: 12 8px;
+  text-align: left;
+  background-color: #393E46;
+  color: #EEEEEE; 
+`
+const Tr = styled.tr`
+&:nth-child(even){
+    background-color: #f2f2f2;
+}
+&:hover {
+    background-color:#ddd;
+  }
+`
+const Header = styled.h1`
+  text-align:center;
+  padding-bottom:10px;
+  colot:#222831;
+`
+const Button = styled.button`
+
+`
+
+const Anlyze = (CUId) => {
+
+    const [datas, setDatas] = useState([]);
+    const [names, setNames] = useState([]);
+
+    const params = useParams();
+    const id = params;
+
+    useEffect(() => {
+        getExamNames();
+    }, [])
+
+
+    const getExamNames = async () => {
+        const { data } = await axios.get(`http://localhost:5000/userexams/exam/${id.id}`);
+        console.log(data.length)
+        for (let i = 0; i < data.length; i++) {
+            setDatas(data);
+            console.log(data);
+        }
+
+    }
+
+    const getUserName = async () => {
+        let count = 0
+        console.log(datas.length)
+        for (let i = 0; i <= datas.length; i++) {
+            const { data } = await axios.get(`http://localhost:5000/users/${datas}`);
+            setNames(data);
+            i++;
+            console.log(data)
+            console.log(count);
+            count++;
+        }
+    }
     return (
         <>
             <LoginNavbar />
-            <div>
-                <h1>A Fancy Table</h1>
-
-                <table id="customers">
-                    <tr>
-                        <th>Company</th>
-                        <th>Contact</th>
-                        <th>Country</th>
-                    </tr>
-                    <tr>
-                        <td>Alfreds Futterkiste</td>
-                        <td>Maria Anders</td>
-                        <td>Germany</td>
-                    </tr>
-                    <tr>
-                        <td>Berglunds snabbköp</td>
-                        <td>Christina Berglund</td>
-                        <td>Sweden</td>
-                    </tr>
-                    <tr>
-                        <td>Centro comercial Moctezuma</td>
-                        <td>Francisco Chang</td>
-                        <td>Mexico</td>
-                    </tr>
-                    <tr>
-                        <td>Ernst Handel</td>
-                        <td>Roland Mendel</td>
-                        <td>Austria</td>
-                    </tr>
-                    <tr>
-                        <td>Island Trading</td>
-                        <td>Helen Bennett</td>
-                        <td>UK</td>
-                    </tr>
-                    <tr>
-                        <td>Königlich Essen</td>
-                        <td>Philip Cramer</td>
-                        <td>Germany</td>
-                    </tr>
-                    <tr>
-                        <td>Laughing Bacchus Winecellars</td>
-                        <td>Yoshi Tannamuri</td>
-                        <td>Canada</td>
-                    </tr>
-                    <tr>
-                        <td>Magazzini Alimentari Riuniti</td>
-                        <td>Giovanni Rovelli</td>
-                        <td>Italy</td>
-                    </tr>
-                    <tr>
-                        <td>North/South</td>
-                        <td>Simon Crowther</td>
-                        <td>UK</td>
-                    </tr>
-                    <tr>
-                        <td>Paris spécialités</td>
-                        <td>Marie Bertrand</td>
-                        <td>France</td>
-                    </tr>
-                </table>
-            </div>
+            <Container>
+                <Header>Exam analysis</Header>
+                <Button onClick={getUserName}>show users</Button>
+                <Button>show users</Button>
+                <Button>show users</Button>
+                <Table>
+                    <Tr>
+                        <Th>Company</Th>
+                        <Th>Contact</Th>
+                        <Th>Country</Th>
+                    </Tr>
+                    <Tr>
+                        <Td>Alfreds Futterkiste</Td>
+                        <Td>Maria Anders</Td>
+                        <Td>Germany</Td>
+                    </Tr>
+                    <Tr>
+                        <Td>Berglunds snabbköp</Td>
+                        <Td>Christina Berglund</Td>
+                        <Td>Sweden</Td>
+                    </Tr>
+                    <Tr>
+                        <Td>Centro comercial Moctezuma</Td>
+                        <Td>Francisco Chang</Td>
+                        <Td>Mexico</Td>
+                    </Tr>
+                    <Tr>
+                        <Td>Ernst Handel</Td>
+                        <Td>Roland Mendel</Td>
+                        <Td>Austria</Td>
+                    </Tr>
+                </Table>
+            </Container>
             <Footer />
         </>
     )

@@ -16,11 +16,9 @@ function App() {
   var currentUserUid;
 
   const userId = useSelector((state) => state.user.currentUser);
-  console.log(userId)
   if (userId == null) {
     console.log("no auth")
   } else {
-    console.log(userId.user._id)
     currentUserUid = userId.user._id
   }
 
@@ -38,9 +36,9 @@ function App() {
         <Route path="/dashboard" element={<RequireAuth><Dashboard CUId={currentUserUid} /></RequireAuth>} />
         <Route path="/create/:id" element={<RequireAuth><CreateQuiz /></RequireAuth>} />
         <Route path="/configure" element={<RequireAuth><Configure /></RequireAuth>} />
-        <Route path="/anlyze" element={<RequireAuth><Anlyze /></RequireAuth>} />
+        <Route path="/anlyze/:id" element={<RequireAuth><Anlyze CUId={currentUserUid} /></RequireAuth>} />
         <Route path="/quiz/:id" element={<RequireAuth><QuizController CUId={currentUserUid} /></RequireAuth>} />
-        <Route path="/result/:id" element={<RequireAuth><Result/></RequireAuth>} />
+        <Route path="/result/:id" element={<RequireAuth><Result /></RequireAuth>} />
       </Routes>
     </div>
   );
