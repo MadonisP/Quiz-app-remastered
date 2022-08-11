@@ -12,7 +12,6 @@ import Paper from '@mui/material/Paper';
 import { ArrowForward, AddCircle, RemoveCircleOutline } from '@mui/icons-material';
 import Popup from 'reactjs-popup';
 import { v4 as uuidv4 } from 'uuid';
-import { useNavigate } from "react-router";
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 

@@ -17,6 +17,7 @@ const Container = styled.div`
 const Result = () => {
 
   const [score, setScore] = useState(0);
+  const [passGrade, setPassGrade] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   const params = useParams();
@@ -24,12 +25,17 @@ const Result = () => {
 
   useEffect(() => {
     getExamNames();
+    getPassGrade();
   }, [])
 
   const getExamNames = async () => {
     const { data } = await axios.get(`http://localhost:5000/userexams/exam/${id.id}`);
-    console.log(data);
     setScore(data);
+  }
+
+  const getPassGrade = async () => {
+    const { data } = await axios.get(`http://localhost:5000/exam/exam/${id.id}`);
+    setPassGrade(data);
     setIsLoading(false);
   }
 
@@ -41,11 +47,13 @@ const Result = () => {
         <Footer />
       </>)
   }
+  console.log(score[0]?.grade)
   return (
     <>
       <LoginNavbar />
       <Container>
-        <span>Final Score : {score}</span>
+        <span>Final Score : {score[0]?.grade}</span> <br />
+        {passGrade[0]?.passGrade < score[0]?.grade ? (<span>congratulations you passed the exam</span>) : (<span>sorry you failed the exam</span>)}
         <Link to="/dashboard">
           <button
             variant="contained"
@@ -53,7 +61,7 @@ const Result = () => {
             size="large"
             style={{ alignSelf: "center", marginTop: 20, cursor: "pointer" }}
           >
-            Go to homepage
+            Go to dashboard
           </button>
         </Link>
       </Container>
