@@ -63,16 +63,18 @@ const Anlyze = (CUId) => {
     }
 
     const getUserName = async () => {
-        //const names = await Promise.all(datas.map((name) => await axios.get(`http://localhost:5000/users/${datas[i]?.userId}`)))
-        console.log(names)
-
-        //   
-
+        for (var i = 0; i <= datas.length + 1; i++) {
+            const { data } = await axios.get(`http://localhost:5000/users/` + datas[i]?.userId);
+            for (let k = 0; k < data.length; k++) {
+                setNames(data)
+            }
+        }
     }
 
-
     const check = () => {
+        console.log(datas.length)
         console.log(datas)
+        console.log(names)
     }
 
     return (
@@ -85,10 +87,16 @@ const Anlyze = (CUId) => {
                 <Button onClick={check}>show users</Button>
                 <Table>
                     <Tr>
-                        <Th>Company</Th>
-                        <Th>Contact</Th>
-                        <Th>Country</Th>
+                        <Th>User Name</Th>
+                        <Th>Exam</Th>
+                        <Th>Score</Th>
                     </Tr>
+                    {names.map((name) => (
+                        <Tr
+                            key={name.email}>
+                            <Td>{name.firstname} {name.lastname}</Td>
+                        </Tr>
+                    ))}
                     <Tr>
                         <Td>Alfreds Futterkiste</Td>
                         <Td>Maria Anders</Td>
