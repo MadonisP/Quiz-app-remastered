@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ErrorMessage from "./ErrorMessage";
 import styled from "styled-components"
 import { useParams } from 'react-router-dom'
@@ -87,7 +87,7 @@ const Question = ({
 
   const handleNext = () => {
     if (currQues >= (questions.length - 1)) {
-      navigate('/result');
+      navigate(`/result/${id.id}`);
     } else if (selected) {
       setCurrQues(currQues + 1);
       setSelected();
@@ -112,7 +112,7 @@ const Question = ({
       console.log(response.data);
     });
   }
-
+  console.log(id.id)
   return (
     <Container>
       <h1>Question {currQues + 1} :</h1>
@@ -137,11 +137,11 @@ const Question = ({
             size="large"
             style={{ width: 185 }}
             onClick={handleNext}>
-            {currQues >= (questions.length - 1) ? (<Link to="/result" style={{ color: "black" }} onClick={handleSubmit} >Submit</Link>) : "Next Question"}
+            {currQues >= (questions.length - 1) ? (<span onClick={handleSubmit} >Submit</span>) : "Next Question"}
           </button>
         </Control>
       </SingleQuestion>
-    </Container>
+    </Container >
   );
 };
 
