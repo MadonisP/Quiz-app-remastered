@@ -57,26 +57,24 @@ const Anlyze = (CUId) => {
 
     const getExamNames = async () => {
         const { data } = await axios.get(`http://localhost:5000/userexams/exam/${id.id}`);
-        console.log(data.length)
         for (let i = 0; i < data.length; i++) {
             setDatas(data);
-            console.log(data);
         }
-
     }
 
     const getUserName = async () => {
-        let count = 0
-        console.log(datas.length)
-        for (let i = 0; i <= datas.length; i++) {
-            const { data } = await axios.get(`http://localhost:5000/users/${datas}`);
-            setNames(data);
-            i++;
-            console.log(data)
-            console.log(count);
-            count++;
-        }
+        //const names = await Promise.all(datas.map((name) => await axios.get(`http://localhost:5000/users/${datas[i]?.userId}`)))
+        console.log(names)
+
+        //   
+
     }
+
+
+    const check = () => {
+        console.log(datas)
+    }
+
     return (
         <>
             <LoginNavbar />
@@ -84,7 +82,7 @@ const Anlyze = (CUId) => {
                 <Header>Exam analysis</Header>
                 <Button onClick={getUserName}>show users</Button>
                 <Button>show users</Button>
-                <Button>show users</Button>
+                <Button onClick={check}>show users</Button>
                 <Table>
                     <Tr>
                         <Th>Company</Th>
