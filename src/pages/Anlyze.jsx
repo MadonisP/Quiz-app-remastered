@@ -46,12 +46,15 @@ const Anlyze = (CUId) => {
 
     const [datas, setDatas] = useState([]);
     const [names, setNames] = useState([]);
+    const [examName, setExamName] = useState([]);
+    const [start, setStart] = useState(true);
 
     const params = useParams();
     const id = params;
 
     useEffect(() => {
         getExamNames();
+        getExam();
     }, [])
 
 
@@ -62,19 +65,22 @@ const Anlyze = (CUId) => {
         }
     }
 
+    const getExam = async () => {
+        const { data } = await axios.get(`http://localhost:5000/exam/exam/${id.id}`);
+        for (let i = 0; i < data.length; i++) {
+            setExamName(data);
+        }
+        console.log(data)
+    }
+
     const getUserName = async () => {
-        for (var i = 0; i <= datas.length + 1; i++) {
+        for (var i = 0; i <= datas.length - 1; i++) {
             const { data } = await axios.get(`http://localhost:5000/users/` + datas[i]?.userId);
             for (let k = 0; k < data.length; k++) {
                 setNames(data)
             }
         }
-    }
-
-    const check = () => {
-        console.log(datas.length)
-        console.log(datas)
-        console.log(names)
+        setStart(false)
     }
 
     return (
@@ -83,8 +89,6 @@ const Anlyze = (CUId) => {
             <Container>
                 <Header>Exam analysis</Header>
                 <Button onClick={getUserName}>show users</Button>
-                <Button>show users</Button>
-                <Button onClick={check}>show users</Button>
                 <Table>
                     <Tr>
                         <Th>User Name</Th>
@@ -95,28 +99,17 @@ const Anlyze = (CUId) => {
                         <Tr
                             key={name.email}>
                             <Td>{name.firstname} {name.lastname}</Td>
+                            {examName.map((exam) => (<Td>{exam.examname}</Td>))}
+                            {datas.map((data) => (<Td>{data.grade}</Td>))}
                         </Tr>
                     ))}
-                    <Tr>
-                        <Td>Alfreds Futterkiste</Td>
-                        <Td>Maria Anders</Td>
-                        <Td>Germany</Td>
-                    </Tr>
-                    <Tr>
-                        <Td>Berglunds snabbköp</Td>
-                        <Td>Christina Berglund</Td>
-                        <Td>Sweden</Td>
-                    </Tr>
-                    <Tr>
-                        <Td>Centro comercial Moctezuma</Td>
-                        <Td>Francisco Chang</Td>
-                        <Td>Mexico</Td>
-                    </Tr>
-                    <Tr>
-                        <Td>Ernst Handel</Td>
-                        <Td>Roland Mendel</Td>
-                        <Td>Austria</Td>
-                    </Tr>
+                    {start && (
+                        <Tr>
+                            <Td>UserName will be here</Td>
+                            <Td>Exam Name</Td>
+                            <Td>Exam Score</Td>
+                        </Tr>
+                    )}
                 </Table>
             </Container>
             <Footer />
