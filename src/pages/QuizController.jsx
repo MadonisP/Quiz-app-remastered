@@ -41,16 +41,21 @@ const QuizController = (CUId) => {
     const userCheck = async () => {
         try {
             const { data } = await axios.get('http://localhost:5000/userexams/' + CUId.CUId);
+            console.log(data)
+            const myData = await Promise.all(data.map((d) => d.examId))
+            console.log(myData)
 
-            for (let i = 0; i <= data.length; i++) {
-                if (data[i]?.examId === id.id) {// buradaki "?" neden oluyor hattaya!
+            for (let i = 0; i <= myData.length; i++) {
+                if (myData[i] === id.id) {// buradaki "?" neden oluyor hattaya!
+                    console.log("if")
                     alert("you have already took this exam")
+                    return
                 }
             }
             setIsLoading(false);
             securityData();
-            
-        } catch {
+        } catch (err) {
+            console.log(err);
             alert("you have already took this exam")
         }
     }

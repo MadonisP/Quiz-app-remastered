@@ -10,6 +10,7 @@ import QuizController from "./pages/QuizController";
 import Result from "./components/quizHandler/Result";
 import Anlyze from "./pages/Anlyze";
 import Reports from "./pages/Reports";
+import Help from "./pages/Help";
 
 
 
@@ -34,6 +35,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/help" element={<Help/>} />
         <Route path="/dashboard" element={<RequireAuth><Dashboard CUId={currentUserUid} /></RequireAuth>} />
         <Route path="/create/:id" element={<RequireAuth><CreateQuiz /></RequireAuth>} />
         <Route path="/configure" element={<RequireAuth><Configure /></RequireAuth>} />

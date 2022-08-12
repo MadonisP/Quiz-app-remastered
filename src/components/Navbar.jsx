@@ -1,5 +1,5 @@
 import React from 'react'
-import styled  from 'styled-components'
+import styled from 'styled-components'
 import { Link } from "react-router-dom";
 
 
@@ -89,7 +89,9 @@ const Navbar = () => {
                         <MenuItem>Home</MenuItem>
                     </Link>
                     <MenuItem>Features</MenuItem>
-                    <MenuItem>Help</MenuItem>
+                    <Link to="/help">
+                        <MenuItem>Help</MenuItem>
+                    </Link>
                 </Left>
                 <Right>
                     <Link to="/login" style={{ textDecoration: "none" }}>
