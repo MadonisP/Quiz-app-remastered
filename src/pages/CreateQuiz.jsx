@@ -138,6 +138,7 @@ const CreateQuiz = () => {
     const getExams = async () => {
         const { data } = await axios.get('http://localhost:5000/examquestions/' + id.id);
         setExamDatas(data);
+        console.log(data[0].options)
     }
 
     const deleteQuestion = (propId) => {
@@ -174,8 +175,7 @@ const CreateQuiz = () => {
                                             {exam.options.map((option) => (
                                                 <>
                                                     <br /><Check type="radio" name={`${index + 1}`} />
-                                                    <Label>{option}</Label>
-
+                                                    <Label>{option.option}</Label>
                                                 </>
                                             ))}
                                             <br />

@@ -27,11 +27,23 @@ const QuizController = (CUId) => {
         console.log(data)
     }
 
-    const securityData = () => {
+    const securityData = async () => {
+        const { data } = await axios.get('http://localhost:5000/users/' + CUId.CUId);
+
+        const { data2 } = await axios.get('http://localhost:5000/exam/exam/' + id.id)
+        alert(data2)
+
+
         const dummyData = {
             userId: CUId.CUId,
-            examId: "dummyId",
+            examId: id.id,
+            userInfo: {
+                username: data[0].firstname + "" + data[0].lastname,
+
+                score: 0,
+            }
         };
+        console.log(dummyData);
         axios.post("http://localhost:5000/userexams/", dummyData).then((response) => {
             console.log(response.status);
             console.log(response.data);
