@@ -75,6 +75,7 @@ const CreateQuiz = () => {
     const [inputFields, setInputFields] = useState([{ id: uuidv4(), option: '' }]);
     const [examDatas, setExamDatas] = useState([]);
     const [questionTitle, setQuestionTitle] = useState("");
+    const [dummy ,setDummy]=useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
 
@@ -82,10 +83,10 @@ const CreateQuiz = () => {
         e.preventDefault();
         if (correctOption == undefined) {
             alert("You have select an correct option")
-        }else if(inputFields[0]?.option == ""){
+        } else if (inputFields[0]?.option == "") {
             alert("You have to add a question to use Add Question feature")
         }
-         else {
+        else {
 
             const inputOption = await Promise.all(inputFields.map((inputF) => inputF.option))
             /* const index = inputOption.indexOf(correctOption)
@@ -132,11 +133,19 @@ const CreateQuiz = () => {
 
     useEffect(() => {
         getExams();
-    }, [options]);
+    }, [options, dummy]);
 
     const getExams = async () => {
         const { data } = await axios.get('http://localhost:5000/examquestions/' + id.id);
         setExamDatas(data);
+    }
+
+    const deleteQuestion = (propId) => {
+        axios.delete('http://localhost:5000/examquestions/' + propId).then((response) => {
+            console.log(response.status);
+            console.log(response.data); 
+            setDummy(dummy + 1);
+        });
     }
 
     return (
@@ -166,8 +175,11 @@ const CreateQuiz = () => {
                                                 <>
                                                     <br /><Check type="radio" name={`${index + 1}`} />
                                                     <Label>{option}</Label>
+
                                                 </>
                                             ))}
+                                            <br />
+                                            <Button style={{ backgroundColor: "red" }} onClick={() => deleteQuestion(exam._id)}>Delete</Button>
                                         </TableCell>
                                         <TableCell align="right"></TableCell>
                                         <TableCell align="right"></TableCell>
