@@ -44,72 +44,76 @@ const Button = styled.button`
 
 const Anlyze = (CUId) => {
 
-    const [datas, setDatas] = useState([]);
-    const [names, setNames] = useState([]);
-    const [examName, setExamName] = useState([]);
-    const [start, setStart] = useState(true);
+    const [examInfo, setExamInfo] = useState([]);
+    const [start, setStart] = useState(false);
 
     const params = useParams();
     const id = params;
 
     useEffect(() => {
-        getExamNames();
-        getExam();
+        getExamInfos();
+        // getExam();
     }, [])
 
 
-    const getExamNames = async () => {
+    const getExamInfos= async () => {
         const { data } = await axios.get(`http://localhost:5000/userexams/exam/${id.id}`);
-        for (let i = 0; i < data.length; i++) {
-            setDatas(data);
-        }
-    }
-
-    const getExam = async () => {
-        const { data } = await axios.get(`http://localhost:5000/exam/exam/${id.id}`);
-        for (let i = 0; i < data.length; i++) {
-            setExamName(data);
-        }
         console.log(data)
+        setExamInfo(data);
     }
 
-    const getUserName = async () => {
-        for (var i = 0; i <= datas.length - 1; i++) {
-            const { data } = await axios.get(`http://localhost:5000/users/` + datas[i]?.userId);
-            for (let k = 0; k < data.length; k++) {
-                setNames(data)
+
+    /*
+        const getExamNames = async () => {
+            const { data } = await axios.get(`http://localhost:5000/userexams/exam/${id.id}`);
+            for (let i = 0; i < data.length; i++) {
+                setDatas(data);
             }
         }
-        setStart(false)
-    }
+    
+        const getExam = async () => {
+            const { data } = await axios.get(`http://localhost:5000/exam/exam/${id.id}`);
+            for (let i = 0; i < data.length; i++) {
+                setExamName(data);
+            }
+            console.log(data)
+        }
+    
+        const getUserName = async () => {
+            for (var i = 0; i <= datas.length - 1; i++) {
+                const { data } = await axios.get(`http://localhost:5000/users/` + datas[i]?.userId);
+                for (let k = 0; k < data.length; k++) {
+                    setNames(data)
+                }
+            }
+            setStart(false)
+        }
+        */
+
+
+    // onClick={getUserName}
 
     return (
         <>
             <LoginNavbar />
             <Container>
                 <Header>Exam analysis</Header>
-                <Button onClick={getUserName}>show users</Button>
                 <Table>
                     <Tr>
                         <Th>User Name</Th>
                         <Th>Exam</Th>
                         <Th>Score</Th>
+                        <Th>cevaplarım</Th>
                     </Tr>
-                    {names.map((name) => (
+                    {examInfo.map((exam) => (
                         <Tr
-                            key={name.email}>
-                            <Td>{name.firstname} {name.lastname}</Td>
-                            {examName.map((exam) => (<Td>{exam.examname}</Td>))}
-                            {datas.map((data) => (<Td>{data.grade}</Td>))}
+                            key={exam._id}>
+                            <Td>{exam.userInfo.username}</Td>
+                            <Td>{exam.userInfo.examname}</Td>
+                            <Td>{exam.grade}</Td>
+                            <Td><button>Click me</button></Td>
                         </Tr>
                     ))}
-                    {start && (
-                        <Tr>
-                            <Td>UserName will be here</Td>
-                            <Td>Exam Name</Td>
-                            <Td>Exam Score</Td>
-                        </Tr>
-                    )}
                 </Table>
             </Container>
             <Footer />

@@ -101,9 +101,6 @@ const Question = ({
       userId: userId,
       examId: id.id,
       grade: score,
-      userInfo: {
-        score: score
-      }
     };
 
     console.log(userExam)
@@ -113,7 +110,6 @@ const Question = ({
     });
   }
 
-  console.log(options)
   return (
     <Container>
       <h1>Question {currQues + 1} :</h1>

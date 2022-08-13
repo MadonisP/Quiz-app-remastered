@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Quiz from "../components/quizHandler/Quiz";
-import Result from "../components/quizHandler/Result";
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import LoginNavbar from "../components/LoginNavbar";
 import Footer from "../components/Footer";
 
@@ -12,6 +11,9 @@ const QuizController = (CUId) => {
     const [questions, setQuestions] = useState([]);
     const [score, setScore] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+
+    const navigate = useNavigate()
+
     const params = useParams();
     const id = params;
 
@@ -25,7 +27,6 @@ const QuizController = (CUId) => {
         const { data } = await axios.get('http://localhost:5000/examquestions/' + id.id);
         setQuestions(data);
         console.log(data);
-        setIsLoading(false);
     }
 
     const securityData = async () => {
@@ -55,6 +56,7 @@ const QuizController = (CUId) => {
             const myData = await Promise.all(data.map((d) => d.examId))
             for (let i = 0; i <= myData.length; i++) {
                 if (myData[i] === id.id) {
+                    navigate("/dashboard")
                     alert("you have already took this exam")
                     return
                 }
@@ -77,8 +79,6 @@ const QuizController = (CUId) => {
                 <Footer />
             </>)
     }
-
-
     return (
         <div>
             <LoginNavbar />
