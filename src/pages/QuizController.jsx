@@ -19,14 +19,12 @@ const QuizController = (CUId) => {
 
     useEffect(() => {
         getExams();
-        userCheck();
-
     }, [])
 
     const getExams = async () => {
         const { data } = await axios.get('http://localhost:5000/examquestions/' + id.id);
         setQuestions(data);
-        console.log(data);
+        userCheck();
     }
 
     const securityData = async () => {
@@ -61,8 +59,8 @@ const QuizController = (CUId) => {
                     return
                 }
             }
-            setIsLoading(false);
             securityData();
+            setIsLoading(false);
         } catch (err) {
             console.log(err);
             alert("you have already took this exam")

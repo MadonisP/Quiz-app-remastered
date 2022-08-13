@@ -24,14 +24,13 @@ const Result = () => {
   const id = params;
 
   useEffect(() => {
-    console.log("check")
     getExamNames();
-    getPassGrade();
   }, [setScore])
 
   const getExamNames = async () => {
     const { data } = await axios.get(`http://localhost:5000/userexams/exam/${id.id}`);
     setScore(data);
+    getPassGrade();
   }
 
   const getPassGrade = async () => {

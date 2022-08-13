@@ -67,7 +67,10 @@ const Question = ({
 }) => {
   const [selected, setSelected] = useState();
   const [error, setError] = useState(false);
-  console.log(questions.length)
+  const [selectedAns, setSelectedAns] = useState([]);
+  const [correctAns, setCorrectAns] = useState([]);
+  const [selectedQuestion, setSelectedQuestion] = useState([]);
+
   const navigate = useNavigate()
 
   const params = useParams();
@@ -81,6 +84,7 @@ const Question = ({
 
   const handleCheck = (i) => {
     setSelected(i);
+    handleReview(i);
     if (i === correct) { setScore(score + 1); }
     setError(false);
   };
@@ -101,14 +105,22 @@ const Question = ({
       userId: userId,
       examId: id.id,
       grade: score,
+      qAnswers: selectedAns,
+      qCorrect: correctAns,
+      qTitle: selectedQuestion,
     };
-
-    console.log(userExam)
     axios.patch(`http://localhost:5000/userexams/${userId}`, userExam).then((response) => {
       console.log(response.status);
       console.log(response.data);
     });
   }
+
+  const handleReview = (i) => {
+    setSelectedQuestion(mySelects => [...mySelects, questions[currQues].questionTitle]);
+    setSelectedAns(mySelects => [...mySelects, i]);
+    setCorrectAns(mySelects => [...mySelects, correct]);
+  }
+
 
   return (
     <Container>
@@ -121,7 +133,7 @@ const Question = ({
             options.map((option) => (
               <button className={`singleOption  ${selected && handleSelect(option.option)}`}
                 key={option._id}
-                onClick={() => handleCheck(option.option)}
+                onClick={() => { handleCheck(option.option); }}
                 disabled={selected}>
                 {option.option}
               </button>
@@ -134,7 +146,7 @@ const Question = ({
             size="large"
             style={{ width: 185 }}
             onClick={handleNext}>
-            {currQues >= (questions.length - 1) ? (<span onClick={handleSubmit} >Submit</span>) : "Next Question"}
+            {currQues >= (questions.length - 1) ? (<span onClick={handleSubmit} >Submit</span>) : (<span>Next Question</span>)}
           </button>
         </Control>
       </SingleQuestion>

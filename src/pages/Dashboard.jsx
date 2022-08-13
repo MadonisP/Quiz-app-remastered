@@ -59,7 +59,6 @@ const Dashboard = (CUId) => {
   const getExamNames = async () => {
     const { data } = await axios.get(`http://localhost:5000/exam/${CUId.CUId}`);
     setExamNameStorage(data);
-    console.log(data);
     setIsLoading(false);
   }
 
@@ -91,9 +90,7 @@ const Dashboard = (CUId) => {
       });
     }
   }
-
-  console.log(examName)
-
+  
   if (isLoading) {
     return (
       <>
