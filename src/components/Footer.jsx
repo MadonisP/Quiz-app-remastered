@@ -3,12 +3,14 @@ import styled from 'styled-components'
 
 const Container = styled.div`
 display: flex;
+background-color:#EEEEEE;
 `;
 const Left = styled.div`
 flex: 1;
 display: flex;
 flex-direction: column;
 padding: 20px;
+margin-left:6%;
 `;
 const Logo = styled.h1``;
 const Description = styled.p`

@@ -53,7 +53,7 @@ const Result = () => {
       <LoginNavbar />
       <Container>
         <span>Final Score : {score[0]?.grade}</span> <br />
-        {passGrade[0]?.passGrade < score[0]?.grade ? (<span>congratulations you passed the exam</span>) : (<span>sorry you failed the exam</span>)}
+        {passGrade[0]?.passGrade < score[0]?.grade ? (<><span>congratulations you passed the exam</span><br /><img src="https://i.ibb.co/7vPw6r4/Png-Item-30479.png" style={{height:"200px", width:"300px", marginLeft:"auto", marginRight:"auto"}}/></>) : (<><span>sorry you failed the exam</span><br/><img src="https://www.onlygfx.com/wp-content/uploads/2020/05/fail-stamp-7.png" style={{height:"200px", width:"300px", marginLeft:"auto", marginRight:"auto"}}/></>)}
         <Link to="/dashboard">
           <button
             variant="contained"

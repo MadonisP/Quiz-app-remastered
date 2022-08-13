@@ -80,31 +80,35 @@ const CreateQuiz = () => {
 
     const addQuestion = async (e) => {
         e.preventDefault();
-        const inputOption = await Promise.all(inputFields.map((inputF) => inputF.option))
-        /* const index = inputOption.indexOf(correctOption)
-        if (index > -1) {
-            inputOption.splice(index, 1);
-        } */
-        console.log(inputOption);
-        setOptions(inputOption);
-        const newQuestion = {
-            examId: id.id,
-            options: inputOption,
-            correctOption: correctOption,
-            questionTitle: questionTitle
-        };
-        console.log(newQuestion)
-        axios.post("http://localhost:5000/examquestions/", newQuestion).then((response) => {
-            console.log(response.status);
-            console.log(response.data);
-        });
+        if (correctOption == undefined) {
+            alert("You have select an correct option")
+        }else if(inputFields[0]?.option == ""){
+            alert("You have to add a question to use Add Question feature")
+        }
+         else {
+
+            const inputOption = await Promise.all(inputFields.map((inputF) => inputF.option))
+            /* const index = inputOption.indexOf(correctOption)
+            if (index > -1) {
+                inputOption.splice(index, 1);
+            } */
+            console.log(inputOption);
+            setOptions(inputOption);
+            const newQuestion = {
+                examId: id.id,
+                options: inputOption,
+                correctOption: correctOption,
+                questionTitle: questionTitle
+            };
+            console.log(newQuestion)
+            axios.post("http://localhost:5000/examquestions/", newQuestion).then((response) => {
+                console.log(response.status);
+                console.log(response.data);
+            });
+        }
 
     }
 
-    const removeCorrect = (inputOption) => {
-
-
-    };
 
     const handleChangeInput = async (id, event) => {
         const newInputFields = await Promise.all(inputFields.map(i => {
@@ -137,6 +141,7 @@ const CreateQuiz = () => {
         console.log(data);
     }
 
+    console.log(inputFields[0].option)
 
     return (
         <>
@@ -189,7 +194,7 @@ const CreateQuiz = () => {
                                                 </button>
 
                                                 <div style={{ width: "100", borderBottom: "1px solid gray", fontSize: "18px", padding: "5px", color: "white" }}>New Question</div>
-                                                <div style={{ padding: "5px", fontSize: "16px", fontWeight: "500", color: "white" }}>Question: <input type="text" onChange={e => setQuestionTitle(e.target.value)} /></div>
+                                                <div style={{ padding: "5px", fontSize: "16px", fontWeight: "500", color: "white" }}>Question: <textarea style={{ verticalAlign: "middle", maxWidth: "580px", maxHeight: "200px", width: "580px" }} type="text" onChange={e => setQuestionTitle(e.target.value)} /></div>
                                                 <form onSubmit={addQuestion} style={{ width: "100%", padding: "10px 5px" }}>
                                                     {inputFields.map(inputField => (
                                                         <div key={inputField.id}>
