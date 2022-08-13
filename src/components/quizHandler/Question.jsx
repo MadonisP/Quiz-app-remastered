@@ -81,7 +81,7 @@ const Question = ({
 
   const handleCheck = (i) => {
     setSelected(i);
-    if (i === correct) setScore(score + 1);
+    if (i === correct) { setScore(score + 1); }
     setError(false);
   };
 
@@ -101,6 +101,9 @@ const Question = ({
       userId: userId,
       examId: id.id,
       grade: score,
+      userInfo: {
+        score: score
+      }
     };
 
     console.log(userExam)
@@ -109,6 +112,8 @@ const Question = ({
       console.log(response.data);
     });
   }
+
+  console.log(options)
   return (
     <Container>
       <h1>Question {currQues + 1} :</h1>
@@ -117,12 +122,12 @@ const Question = ({
         <Options>
           {error && <ErrorMessage>{error}</ErrorMessage>}
           {options &&
-            options[0].map((i) => (
-              <button className={`singleOption  ${selected && handleSelect(i)}`}
-                key={i}
-                onClick={() => handleCheck(i)}
+            options.map((option) => (
+              <button className={`singleOption  ${selected && handleSelect(option.option)}`}
+                key={option._id}
+                onClick={() => handleCheck(option.option)}
                 disabled={selected}>
-                {i}
+                {option.option}
               </button>
             ))}
         </Options>

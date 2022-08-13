@@ -26,7 +26,7 @@ const Result = () => {
   useEffect(() => {
     getExamNames();
     getPassGrade();
-  }, [])
+  }, [score])
 
   const getExamNames = async () => {
     const { data } = await axios.get(`http://localhost:5000/userexams/exam/${id.id}`);

@@ -17,7 +17,7 @@ const QuizController = (CUId) => {
 
     useEffect(() => {
         getExams();
-        // userCheck();
+        userCheck();
 
     }, [])
 
@@ -49,13 +49,7 @@ const QuizController = (CUId) => {
         }))
     }
 
-    /*
-
-   
-
-    */
-
-    /*  const userCheck = async () => {
+    const userCheck = async () => {
         try {
             const { data } = await axios.get('http://localhost:5000/userexams/' + CUId.CUId);
             const myData = await Promise.all(data.map((d) => d.examId))
@@ -72,7 +66,7 @@ const QuizController = (CUId) => {
             alert("you have already took this exam")
         }
     }
-    */
+
 
 
     if (isLoading) {

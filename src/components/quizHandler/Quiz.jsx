@@ -4,22 +4,33 @@ import Question from "./Question";
 const Quiz = ({ questions, score, setScore, setQuestions, userId }) => {
     const [options, setOptions] = useState();
     const [currQues, setCurrQues] = useState(0);
-
+    const [correct, setCorrect] = useState();
 
     useEffect(() => {
-        setOptions(
-            questions &&
-            handleShuffle([
-                questions[currQues]?.options,
-            ])
-        );
+        startFunction();
     }, [currQues, questions]);
 
-    const handleShuffle = (options) => {
-        return options.sort(() => Math.random() - 0.5);
-    };
-    console.log("quiz")
-    console.log(questions[0].options[0].option)
+    const startFunction = () => {
+        var data;
+        var dataOptions;
+
+        data = (questions[currQues].options)
+        console.log(data)
+        setOptions(data);
+
+        for (let k = 0; k < data.length; k++) {
+            dataOptions = (data[k].isCorrect);
+            if (dataOptions == true) {
+                setCorrect(data[k].option)
+                console.log(data[k].option)
+            }
+        }
+
+
+        // const { data } = questions[currQues]?.options[currQues];
+        //   setOptions(data);
+    }
+
     return (
         <div className="quiz">
             {questions ? (
@@ -34,7 +45,7 @@ const Quiz = ({ questions, score, setScore, setQuestions, userId }) => {
                         setCurrQues={setCurrQues}
                         questions={questions}
                         options={options}
-                        correct={questions[currQues]?.correctOption}
+                        correct={correct}
                         score={score}
                         setScore={setScore}
                         setQuestions={setQuestions}
@@ -42,7 +53,7 @@ const Quiz = ({ questions, score, setScore, setQuestions, userId }) => {
                     />
                 </>
             ) : (
-                <div>xd</div>
+                <div>Errorlandım</div>
             )}
         </div>
     );
