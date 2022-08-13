@@ -132,16 +132,12 @@ const CreateQuiz = () => {
 
     useEffect(() => {
         getExams();
-        console.log(id.id)
     }, [options]);
 
     const getExams = async () => {
         const { data } = await axios.get('http://localhost:5000/examquestions/' + id.id);
         setExamDatas(data);
-        console.log(data);
     }
-
-    console.log(inputFields[0].option)
 
     return (
         <>

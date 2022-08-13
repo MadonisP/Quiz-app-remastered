@@ -77,16 +77,22 @@ const Dashboard = (CUId) => {
 
   const handleName = (e) => {
     e.preventDefault();
-    const newExam = {
-      creatorUserId: CUId.CUId,
-      examname: examName,
-    };
-    console.log(newExam)
-    axios.post("http://localhost:5000/exam/", newExam).then((response) => {
-      console.log(response.status);
-      console.log(response.data);
-    });
+    if (examName == "") {
+      alert("If you want to create an exam you have to give it a name")
+    } else {
+      const newExam = {
+        creatorUserId: CUId.CUId,
+        examname: examName,
+      };
+      console.log(newExam)
+      axios.post("http://localhost:5000/exam/", newExam).then((response) => {
+        console.log(response.status);
+        console.log(response.data);
+      });
+    }
   }
+
+  console.log(examName)
 
   if (isLoading) {
     return (
