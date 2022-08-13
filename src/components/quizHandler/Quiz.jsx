@@ -1,4 +1,3 @@
-// import { CircularProgress } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import Question from "./Question";
 
@@ -19,7 +18,8 @@ const Quiz = ({ questions, score, setScore, setQuestions, userId }) => {
     const handleShuffle = (options) => {
         return options.sort(() => Math.random() - 0.5);
     };
-
+    console.log("quiz")
+    console.log(questions[0].options[0].option)
     return (
         <div className="quiz">
             {questions ? (

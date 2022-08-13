@@ -109,7 +109,6 @@ const Question = ({
       console.log(response.data);
     });
   }
-  console.log(id.id)
   return (
     <Container>
       <h1>Question {currQues + 1} :</h1>

@@ -9,7 +9,7 @@ import Footer from "../components/Footer";
 const QuizController = (CUId) => {
 
     const userId = CUId.CUId
-    const [questions, setQuestions] = useState();
+    const [questions, setQuestions] = useState([]);
     const [score, setScore] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const params = useParams();
@@ -17,49 +17,50 @@ const QuizController = (CUId) => {
 
     useEffect(() => {
         getExams();
-        userCheck();
+        // userCheck();
 
     }, [])
 
     const getExams = async () => {
         const { data } = await axios.get('http://localhost:5000/examquestions/' + id.id);
         setQuestions(data);
-        console.log(data)
+        console.log(data);
+        setIsLoading(false);
     }
 
     const securityData = async () => {
-        const { data } = await axios.get('http://localhost:5000/users/' + CUId.CUId);
-
-        const { data2 } = await axios.get('http://localhost:5000/exam/exam/' + id.id)
-        alert(data2)
-
-
-        const dummyData = {
-            userId: CUId.CUId,
-            examId: id.id,
-            userInfo: {
-                username: data[0].firstname + "" + data[0].lastname,
-
-                score: 0,
-            }
-        };
-        console.log(dummyData);
-        axios.post("http://localhost:5000/userexams/", dummyData).then((response) => {
-            console.log(response.status);
-            console.log(response.data);
-        });
+        axios.all([
+            await axios.get('http://localhost:5000/users/' + CUId.CUId),
+            await axios.get('http://localhost:5000/exam/exam/' + id.id)
+        ]).then(axios.spread((data, data2) => {
+            const dummyData = {
+                userId: CUId.CUId,
+                examId: id.id,
+                userInfo: {
+                    username: data.data[0].firstname + " " + data.data[0].lastname,
+                    examname: data2.data[0].examname,
+                    score: 0,
+                }
+            };
+            axios.post("http://localhost:5000/userexams/", dummyData).then((response) => {
+                console.log(response.status);
+                console.log(response.data);
+            });
+        }))
     }
 
-    const userCheck = async () => {
+    /*
+
+   
+
+    */
+
+    /*  const userCheck = async () => {
         try {
             const { data } = await axios.get('http://localhost:5000/userexams/' + CUId.CUId);
-            console.log(data)
             const myData = await Promise.all(data.map((d) => d.examId))
-            console.log(myData)
-
             for (let i = 0; i <= myData.length; i++) {
-                if (myData[i] === id.id) {// buradaki "?" neden oluyor hattaya!
-                    console.log("if")
+                if (myData[i] === id.id) {
                     alert("you have already took this exam")
                     return
                 }
@@ -71,6 +72,8 @@ const QuizController = (CUId) => {
             alert("you have already took this exam")
         }
     }
+    */
+
 
     if (isLoading) {
         return (
@@ -80,6 +83,8 @@ const QuizController = (CUId) => {
                 <Footer />
             </>)
     }
+
+
     return (
         <div>
             <LoginNavbar />
