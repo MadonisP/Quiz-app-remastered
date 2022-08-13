@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Footer from '../components/Footer'
 import LoginNavbar from '../components/LoginNavbar'
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../FirebaseConfig"
 
 const Container = styled.div`
 width: 100%;
@@ -38,12 +36,10 @@ padding:5px;
 border:none;
 border-radius:3px;
 `
-
 const Label = styled.label`
 font-size:14px;
 padding: 10px;
 `
-
 const Section = styled.div`
 margin:10px 20px;
 `
