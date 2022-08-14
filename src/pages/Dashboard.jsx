@@ -54,6 +54,7 @@ const Dashboard = (CUId) => {
   const [isLoading, setIsLoading] = useState(true);
   const [examName, setExamName] = useState("");
   const [examNameStorage, setExamNameStorage] = useState([]);
+  const [dummy, setDummy] = useState(0);
 
 
   const getExamNames = async () => {
@@ -63,16 +64,16 @@ const Dashboard = (CUId) => {
   }
 
   const deleteExam = (id) => {
-    console.log(id)
     axios.delete(`http://localhost:5000/exam/${id}`).then((response) => {
       console.log(response.status);
       console.log(response.data);
     });
+    setDummy(dummy + 1)
   }
 
   useEffect(() => {
     getExamNames();
-  }, [examName]);
+  }, [examName, dummy]);
 
   const handleName = (e) => {
     e.preventDefault();
@@ -88,9 +89,10 @@ const Dashboard = (CUId) => {
         console.log(response.status);
         console.log(response.data);
       });
+      setDummy(dummy + 1)
     }
   }
-  
+
   if (isLoading) {
     return (
       <>
