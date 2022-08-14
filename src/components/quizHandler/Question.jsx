@@ -105,9 +105,11 @@ const Question = ({
       userId: userId,
       examId: id.id,
       grade: score,
-      qAnswers: selectedAns,
-      qCorrect: correctAns,
-      qTitle: selectedQuestion,
+      examReview: {
+        qAnswers: selectedAns,
+        qCorrect: correctAns,
+        qTitle: selectedQuestion,
+      }
     };
     axios.patch(`http://localhost:5000/userexams/${userId}`, userExam).then((response) => {
       console.log(response.status);

@@ -75,7 +75,7 @@ const CreateQuiz = () => {
     const [inputFields, setInputFields] = useState([{ id: uuidv4(), option: '' }]);
     const [examDatas, setExamDatas] = useState([]);
     const [questionTitle, setQuestionTitle] = useState("");
-    const [dummy ,setDummy]=useState(0);
+    const [dummy, setDummy] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
 
@@ -144,7 +144,7 @@ const CreateQuiz = () => {
     const deleteQuestion = (propId) => {
         axios.delete('http://localhost:5000/examquestions/' + propId).then((response) => {
             console.log(response.status);
-            console.log(response.data); 
+            console.log(response.data);
             setDummy(dummy + 1);
         });
     }

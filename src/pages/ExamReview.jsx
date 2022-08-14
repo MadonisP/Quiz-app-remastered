@@ -65,7 +65,7 @@ cursor: pointer;
 
 const ExamReview = () => {
 
-    const [examQuestions, setExamQuestions] = useState();
+    const [examQuestions, setExamQuestions] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const params = useParams();
@@ -78,6 +78,7 @@ const ExamReview = () => {
     const getExamInfos = async () => {
         const { data } = await axios.get(`http://localhost:5000/userexams/exam/${id.id}`);
         console.log(data)
+        console.log(data[0].examReview.qAnswers)
         setExamQuestions(data);
         setIsLoading(false);
     }
@@ -108,17 +109,18 @@ const ExamReview = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {examQuestions.map((exam, index) => (
+                                {examQuestions?.map((exam, index) => (
                                     <TableRow
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
+                                    key={exam._id} >
                                         <TableCell component="th" scope="exam" style={{ color: "#222831", fontSize: "16px", fontWeight: "600", padding: "25px" }}>
-                                            <Label>{(index + 1) + " ) "}{exam.qTitle}</Label>
+                                            <Label>{(index + 1) + " ) "}{exam.examReview.qTitle}</Label>
                                             <br /><Check type="radio" name={`${index + 1}`} />
-                                            <Label>{exam.qAnswers}</Label>
+                                            <Label>{exam.examReview.qAnswers}</Label>
                                             <br /><Check type="radio" name={`${index + 1}`} />
-                                            <Label>{exam.qCorrect}</Label>
+                                            <Label>{exam.examReview.qCorrect}</Label>
                                         </TableCell>
+
                                         <TableCell align="right"></TableCell>
                                         <TableCell align="right"></TableCell>
                                         <TableCell align="right"></TableCell>
