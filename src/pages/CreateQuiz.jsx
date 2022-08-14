@@ -9,7 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { ArrowForward, AddCircle, RemoveCircleOutline } from '@mui/icons-material';
+import { ArrowForward, AddCircle, RemoveCircleOutline, ControlPointDuplicateSharp } from '@mui/icons-material';
 import Popup from 'reactjs-popup';
 import { v4 as uuidv4 } from 'uuid';
 import { useParams } from 'react-router-dom'
@@ -76,7 +76,7 @@ const CreateQuiz = () => {
     const [examDatas, setExamDatas] = useState([]);
     const [questionTitle, setQuestionTitle] = useState("");
     const [dummy, setDummy] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
+    const [dumy, setDumy] = useState(0);
 
 
     const addQuestion = async (e) => {
@@ -95,19 +95,43 @@ const CreateQuiz = () => {
             } */
             console.log(inputOption);
             setOptions(inputOption);
+
             const newQuestion = {
                 examId: id.id,
-                options: inputOption,
-                correctOption: correctOption,
-                questionTitle: questionTitle
+                questionTitle: questionTitle,
             };
             console.log(newQuestion)
             axios.post("http://localhost:5000/examquestions/", newQuestion).then((response) => {
                 console.log(response.status);
-                console.log(response.data);
+                const data = response.data._id;
+                handleOptions({ data, inputOption });
             });
         }
+    }
 
+    const handleOptions = ({ data, inputOption }) => {
+        var questionOptions;
+        var control;
+        for (let i = 0; i < inputOption.length; i++) {
+            var questionOptions = inputOption[i];
+            if (questionOptions == correctOption) {
+                control = true
+            } else {
+                control = false
+            }
+            const option = {
+                options: {
+                    option: questionOptions,
+                    isCorrect: control
+                }
+            }
+            console.log(option);
+            axios.put("http://localhost:5000/examquestions/" + data, option).then((response) => {
+                console.log(response.status);
+                console.log(response);
+            });
+        }
+        setDumy(dumy + 1)
     }
 
 
@@ -133,7 +157,8 @@ const CreateQuiz = () => {
 
     useEffect(() => {
         getExams();
-    }, [options, dummy]);
+        console.log("Check")
+    }, [options, dummy, dumy]);
 
     const getExams = async () => {
         const { data } = await axios.get('http://localhost:5000/examquestions/' + id.id);
