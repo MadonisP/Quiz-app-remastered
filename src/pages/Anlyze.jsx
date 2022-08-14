@@ -1,7 +1,7 @@
 import Footer from '../components/Footer'
 import LoginNavbar from '../components/LoginNavbar'
 import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 
@@ -45,7 +45,7 @@ const Button = styled.button`
 const Anlyze = (CUId) => {
 
     const [examInfo, setExamInfo] = useState([]);
-    const [start, setStart] = useState(false);
+    const [start, setStart] = useState(true);
 
     const params = useParams();
     const id = params;
@@ -56,10 +56,10 @@ const Anlyze = (CUId) => {
     }, [])
 
 
-    const getExamInfos= async () => {
+    const getExamInfos = async () => {
         const { data } = await axios.get(`http://localhost:5000/userexams/exam/${id.id}`);
-        console.log(data)
         setExamInfo(data);
+        setStart(false);
     }
 
 
@@ -92,7 +92,14 @@ const Anlyze = (CUId) => {
 
 
     // onClick={getUserName}
-
+    if (start) {
+        return (
+            <>
+                <LoginNavbar />
+                <div style={{ verticalAlign: "middle", display: "flex", border: "16px solid #f3f3f3", borderRadius: "50%", borderTop: "16px solid #3498db", width: "120px", height: "120px", WebkitAnimation: "spin 2s linear infinite" }}></div>
+                <Footer />
+            </>)
+    }
     return (
         <>
             <LoginNavbar />
@@ -111,7 +118,7 @@ const Anlyze = (CUId) => {
                             <Td>{exam.userInfo.username}</Td>
                             <Td>{exam.userInfo.examname}</Td>
                             <Td>{exam.grade}</Td>
-                            <Td><button>Click me</button></Td>
+                            <Td><Link to={`/examreview/${id.id}`}><button>Click me</button></Link></Td>
                         </Tr>
                     ))}
                 </Table>

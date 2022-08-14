@@ -11,6 +11,7 @@ import Result from "./components/quizHandler/Result";
 import Anlyze from "./pages/Anlyze";
 import Reports from "./pages/Reports";
 import Help from "./pages/Help";
+import ExamReview from "./pages/ExamReview";
 
 
 
@@ -37,6 +38,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/help" element={<Help/>} />
         <Route path="/dashboard" element={<RequireAuth><Dashboard CUId={currentUserUid} /></RequireAuth>} />
+        <Route path="/examreview/:id" element={<RequireAuth><ExamReview /></RequireAuth>} />
         <Route path="/create/:id" element={<RequireAuth><CreateQuiz /></RequireAuth>} />
         <Route path="/configure" element={<RequireAuth><Configure /></RequireAuth>} />
         <Route path="/reports" element={<RequireAuth><Reports /></RequireAuth>} />
