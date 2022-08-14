@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ErrorMessage from "./ErrorMessage";
 import styled from "styled-components"
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
+import LoginNavbar from "../LoginNavbar";
+import Footer from "../Footer";
 
 const Container = styled.div`
   width: 100%;
@@ -67,14 +69,24 @@ const Question = ({
 }) => {
   const [selected, setSelected] = useState();
   const [error, setError] = useState(false);
-  const [selectedAns, setSelectedAns] = useState([]);
-  const [correctAns, setCorrectAns] = useState([]);
-  const [selectedQuestion, setSelectedQuestion] = useState([]);
+  const [pass, setPass] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
 
   const navigate = useNavigate()
 
   const params = useParams();
   const id = params;
+
+  useEffect(() => {
+    handleCreatorUser();
+  }, [])
+
+  const handleCreatorUser = async () => {
+    const { data } = await axios.get('http://localhost:5000/exam/exam/' + id.id)
+    setPass(data[0].creatorUserId == userId)
+    setIsLoading(false)
+  }
 
   const handleSelect = (i) => {
     if (selected === i && selected === correct) return "select";
@@ -100,33 +112,48 @@ const Question = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const userExam = {
-      userId: userId,
-      examId: id.id,
-      grade: score,
-    };
-    axios.patch(`http://localhost:5000/userexams/${userId}`, userExam).then((response) => {
-      console.log(response.status);
-      console.log(response.data);
-    });
+    if (pass == userId) {
+      console.log("datas did not saved")
+    } else {
+      const userExam = {
+        userId: userId,
+        examId: id.id,
+        grade: score,
+      };
+      axios.patch(`http://localhost:5000/userexams/${userId}`, userExam).then((response) => {
+        console.log(response.status);
+        console.log(response.data);
+      });
+    }
   }
 
   const handleReview = (i) => {
-    const userOptions = {
-      examReview: {
-        qAnswers: i,
-        qCorrect: correct,
-        qTitle: questions[currQues].questionTitle,
-      }
-    };
-    console.log(userOptions)
-    axios.put("http://localhost:5000/userexams/" + userId, userOptions).then((response) => {
-      console.log(response.status);
-      console.log(response.data);
-    });
+    if (pass == userId) {
+      console.log("datas did not saved")
+    } else {
+      const userOptions = {
+        examReview: {
+          qAnswers: i,
+          qCorrect: correct,
+          qTitle: questions[currQues].questionTitle,
+        }
+      };
+      console.log(userOptions)
+      axios.put("http://localhost:5000/userexams/" + userId, userOptions).then((response) => {
+        console.log(response.status);
+        console.log(response.data);
+      });
+    }
   }
 
-
+  if (isLoading) {
+    return (
+      <>
+        <LoginNavbar />
+        <div style={{ verticalAlign: "middle", display: "flex", border: "16px solid #f3f3f3", borderRadius: "50%", borderTop: "16px solid #3498db", width: "120px", height: "120px", WebkitAnimation: "spin 2s linear infinite" }}></div>
+        <Footer />
+      </>)
+  }
   return (
     <Container>
       <h1>Question {currQues + 1} :</h1>
@@ -137,7 +164,7 @@ const Question = ({
           {options &&
             options.map((option) => (
               <button className={`singleOption  ${selected && handleSelect(option.option)}`}
-                key={option._id}
+                key={option._id} creator
                 onClick={() => { handleCheck(option.option); handleReview(option.option) }}
                 disabled={selected}>
                 {option.option}

@@ -32,19 +32,24 @@ const QuizController = (CUId) => {
             await axios.get('http://localhost:5000/users/' + CUId.CUId),
             await axios.get('http://localhost:5000/exam/exam/' + id.id)
         ]).then(axios.spread((data, data2) => {
-            const dummyData = {
-                userId: CUId.CUId,
-                examId: id.id,
-                userInfo: {
-                    username: data.data[0].firstname + " " + data.data[0].lastname,
-                    examname: data2.data[0].examname,
-                    score: 0,
-                }
-            };
-            axios.post("http://localhost:5000/userexams/", dummyData).then((response) => {
-                console.log(response.status);
-                console.log(response.data);
-            });
+            if (data2.data[0].creatorUserId == CUId.CUId) {
+                alert("You are in preview mode that means your question data will not be saved")
+            } else {
+
+                const dummyData = {
+                    userId: CUId.CUId,
+                    examId: id.id,
+                    userInfo: {
+                        username: data.data[0].firstname + " " + data.data[0].lastname,
+                        examname: data2.data[0].examname,
+                        score: 0,
+                    }
+                };
+                axios.post("http://localhost:5000/userexams/", dummyData).then((response) => {
+                    console.log(response.status);
+                    console.log(response.data);
+                });
+            }
         }))
     }
 
