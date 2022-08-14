@@ -84,7 +84,6 @@ const Question = ({
 
   const handleCheck = (i) => {
     setSelected(i);
-    handleReview(i);
     if (i === correct) { setScore(score + 1); }
     setError(false);
   };
@@ -105,11 +104,6 @@ const Question = ({
       userId: userId,
       examId: id.id,
       grade: score,
-      examReview: {
-        qAnswers: selectedAns,
-        qCorrect: correctAns,
-        qTitle: selectedQuestion,
-      }
     };
     axios.patch(`http://localhost:5000/userexams/${userId}`, userExam).then((response) => {
       console.log(response.status);
@@ -118,9 +112,18 @@ const Question = ({
   }
 
   const handleReview = (i) => {
-    setSelectedQuestion(mySelects => [...mySelects, questions[currQues].questionTitle]);
-    setSelectedAns(mySelects => [...mySelects, i]);
-    setCorrectAns(mySelects => [...mySelects, correct]);
+    const userOptions = {
+      examReview: {
+        qAnswers: i,
+        qCorrect: correct,
+        qTitle: questions[currQues].questionTitle,
+      }
+    };
+    console.log(userOptions)
+    axios.put("http://localhost:5000/userexams/" + userId, userOptions).then((response) => {
+      console.log(response.status);
+      console.log(response.data);
+    });
   }
 
 
@@ -135,7 +138,7 @@ const Question = ({
             options.map((option) => (
               <button className={`singleOption  ${selected && handleSelect(option.option)}`}
                 key={option._id}
-                onClick={() => { handleCheck(option.option); }}
+                onClick={() => { handleCheck(option.option); handleReview(option.option) }}
                 disabled={selected}>
                 {option.option}
               </button>

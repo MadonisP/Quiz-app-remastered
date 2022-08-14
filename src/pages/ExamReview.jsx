@@ -73,12 +73,13 @@ const ExamReview = () => {
 
     useEffect(() => {
         getExamInfos();
+        console.log("check")
     }, [])
 
     const getExamInfos = async () => {
         const { data } = await axios.get(`http://localhost:5000/userexams/exam/${id.id}`);
         console.log(data)
-        console.log(data[0].examReview.qAnswers)
+        console.log(data[0].examReview[0].qAnswers)
         setExamQuestions(data);
         setIsLoading(false);
     }
@@ -108,26 +109,30 @@ const ExamReview = () => {
                                     <TableCell align="right"></TableCell>
                                 </TableRow>
                             </TableHead>
-                            <TableBody>
-                                {examQuestions?.map((exam, index) => (
+                            {examQuestions?.map((exam, index) => (
+                                <TableBody>
                                     <TableRow
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    key={exam._id} >
+                                        key={exam._id} >
                                         <TableCell component="th" scope="exam" style={{ color: "#222831", fontSize: "16px", fontWeight: "600", padding: "25px" }}>
-                                            <Label>{(index + 1) + " ) "}{exam.examReview.qTitle}</Label>
-                                            <br /><Check type="radio" name={`${index + 1}`} />
-                                            <Label>{exam.examReview.qAnswers}</Label>
-                                            <br /><Check type="radio" name={`${index + 1}`} />
-                                            <Label>{exam.examReview.qCorrect}</Label>
+                                            {exam.examReview.map((examR, indexi) => (<>
+                                                <Label><span style={{ color: "orange" }}>{"Exam Name )  "}</span>{examR.qTitle}</Label>
+                                                <br /><Check type="radio" name={`${indexi + 1}`} />
+                                                <Label><span style={{ color: "teal" }}>{"Your Answer ) "}</span> {examR.qAnswers}</Label>
+                                                <br /><Check type="radio" name={`${indexi + 1}`} />
+                                                <Label><span style={{ color: "green" }}>{"Correct Answer ) "}</span>{examR.qCorrect}</Label>
+                                                <br />
+                                                <br />
+                                            </>))}
                                         </TableCell>
-
+                                        <br />
                                         <TableCell align="right"></TableCell>
                                         <TableCell align="right"></TableCell>
                                         <TableCell align="right"></TableCell>
                                         <TableCell align="right"></TableCell>
                                     </TableRow>
-                                ))}
-                            </TableBody>
+                                </TableBody>
+                            ))}
                             <TableHead>
                                 <TableRow>
                                     <TableCell></TableCell>
