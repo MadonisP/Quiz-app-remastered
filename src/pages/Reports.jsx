@@ -54,29 +54,28 @@ const Reports = (CUId) => {
   const [examDatas, setExamDatas] = useState([]);
 
   useEffect(() => {
-    getDatas()
+    getUserDatas()
+    getExamDatas()
   }, [])
 
-  const getDatas = async () => {
-    axios.all([
-      await axios.get(`http://localhost:5000/exam`),
-      await axios.get(`http://localhost:5000/userexams/` + CUId.CUId)
-    ]).then(axios.spread((data, data2) => {
-      for (let i = 0; i < data.data.length; i++) {
-        for (let k = 0; k < data2.data.length; k++) {
-          if (data.data[i]._id == data2.data[k].examId) {
-            setUserDatas(oldArray => [...oldArray, {[i]:"Solved"}] );
-          }
-        }
-      }
-      setExamDatas(data.data)
-      console.log(data.data)
-    }))
-    setIsLoading(false)
+
+
+  const getUserDatas = async () => {
+    const { data } = await axios.get(`http://localhost:5000/userexams/` + CUId.CUId)
+    setUserDatas(data)
+    console.log(data)
   }
 
-  console.log(userDatas)
+  const getExamDatas = async () => {
+    await axios.get(`http://localhost:5000/exam`).then((response) => {
+      setExamDatas(response.data)
+      console.log(response.data)
+      setIsLoading(false)
+    })
+  }
 
+
+  console.log()
   if (isLoading) {
 
     return (
@@ -97,11 +96,13 @@ const Reports = (CUId) => {
             <Th>Link</Th>
             <Th>Status</Th>
           </Tr>
-          {examDatas.map((user, index) => (
+          {examDatas.map((exam, index) => (
             <Tr key={index}>
-              <Td>{user.examname}</Td>
-              <Td><Link to={`/quiz/${user._id}`}><Button>Go to exam</Button></Link></Td>
-              <Td>{index == Object.keys(userDatas[0]) ? (<span>{userDatas[index]}</span>) : (<span>{"Available"}</span>)}</Td>
+              <Td>{exam.examname}</Td>
+              <Td><Link to={`/quiz/${exam._id}`}><Button>Go to exam</Button></Link></Td>
+              {userDatas.map((user) => (
+                <Td>{exam._id == user.examId ? (<span>{"Solved"}</span>) : (<span>{"Available"}</span>)}</Td>
+              ))}
             </Tr>
           ))}
         </Table>

@@ -34,8 +34,9 @@ const Result = () => {
   }
 
   const getPassGrade = async () => {
-    const { data } = await axios.get(`http://localhost:5000/exam/exam/${id.id}`);
-    setPassGrade(data);
+    await axios.get(`http://localhost:5000/exam/exam/${id.id}`).then((response) => {
+      setPassGrade(response.data);
+    });
     setIsLoading(false);
   }
 
