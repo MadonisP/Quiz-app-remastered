@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Question from "./Question";
 
-const Quiz = ({ questions, score, setScore, setQuestions, userId }) => {
+const Quiz = ({ questions, score, setScore, setQuestions, userId, exam_id}) => {
     const [options, setOptions] = useState();
     const [currQues, setCurrQues] = useState(0);
     const [correct, setCorrect] = useState();
@@ -30,7 +30,7 @@ const Quiz = ({ questions, score, setScore, setQuestions, userId }) => {
         // const { data } = questions[currQues]?.options[currQues];
         //   setOptions(data);
     }
-
+    console.log(exam_id)
     return (
         <div className="quiz">
             {questions ? (
@@ -50,10 +50,11 @@ const Quiz = ({ questions, score, setScore, setQuestions, userId }) => {
                         setScore={setScore}
                         setQuestions={setQuestions}
                         userId={userId}
+                        exam_id={exam_id}
                     />
                 </>
             ) : (
-                <div>Errorlandım</div>
+                <div>Sorry we couldn't find any question</div>
             )}
         </div>
     );

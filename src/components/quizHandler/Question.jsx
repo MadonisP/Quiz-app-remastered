@@ -65,7 +65,8 @@ const Question = ({
   setScore,
   score,
   setQuestions,
-  userId
+  userId,
+  exam_id
 }) => {
   const [selected, setSelected] = useState();
   const [error, setError] = useState(false);
@@ -112,6 +113,7 @@ const Question = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(exam_id)
     if (pass == userId) {
       console.log("datas did not saved")
     } else {
@@ -120,7 +122,7 @@ const Question = ({
         examId: id.id,
         grade: score,
       };
-      axios.patch(`http://localhost:5000/userexams/${userId}`, userExam).then((response) => {
+      axios.patch(`http://localhost:5000/userexams/${exam_id}`, userExam).then((response) => {
         console.log(response.status);
         console.log(response.data);
       });
@@ -139,7 +141,7 @@ const Question = ({
         }
       };
       console.log(userOptions)
-      axios.put("http://localhost:5000/userexams/" + userId, userOptions).then((response) => {
+      axios.put("http://localhost:5000/userexams/" + exam_id, userOptions).then((response) => {
         console.log(response.status);
         console.log(response.data);
       });

@@ -11,6 +11,8 @@ const QuizController = (CUId) => {
     const [questions, setQuestions] = useState([]);
     const [score, setScore] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const [exam_id, setExam_id] = useState("");
+    
 
     const navigate = useNavigate()
 
@@ -47,7 +49,8 @@ const QuizController = (CUId) => {
                 };
                 axios.post("http://localhost:5000/userexams/", dummyData).then((response) => {
                     console.log(response.status);
-                    console.log(response.data);
+                    console.log(response.data._id);
+                    setExam_id(response.data._id)
                 });
             }
         }))
@@ -91,6 +94,7 @@ const QuizController = (CUId) => {
                 setScore={setScore}
                 setQuestions={setQuestions}
                 userId={userId}
+                exam_id={exam_id}
             />
             <Footer />
         </div>
