@@ -13,6 +13,8 @@ import { useEffect, useState } from "react";
 import Popup from 'reactjs-popup';
 import axios from 'axios'
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Container = styled.table`
     width: 100%;
@@ -50,6 +52,8 @@ cursor: pointer;
 }
 `
 const Dashboard = (CUId) => {
+
+  const notify = () => toast.success("Link successfully  copied to the clipboard");
 
   const [isLoading, setIsLoading] = useState(true);
   const [examName, setExamName] = useState("");
@@ -153,8 +157,8 @@ const Dashboard = (CUId) => {
                     key={name.examname}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell component="th" scope="row">
-                      {name.examname}
+                    <TableCell component="th" scope="row"  onClick={() => { navigator.clipboard.writeText("http://localhost:3000/quiz/62f287dcee776e0f64687406") }}>
+                      <span style={{ cursor: "pointer" }} onClick={() => { notify(); }}> {name.examname}  <span style={{ color: "#CC0000" }}>{"=>"}  Click for quiz link</span> </span>
                     </TableCell>
                     <TableCell align="right"><Link to={`/anlyze/${name._id}`}><Button><BarChart style={{ verticalAlign: "middle", padding: "5px" }} />Analyze</Button></Link></TableCell>
                     <TableCell align="right"><Link to={`/quiz/${name._id}`}><Button><Visibility style={{ verticalAlign: "middle", padding: "5px" }} />Preview</Button></Link></TableCell>
@@ -168,6 +172,7 @@ const Dashboard = (CUId) => {
         </Wrapper>
       </Container>
       <Footer />
+      <ToastContainer />
     </>
   );
 }

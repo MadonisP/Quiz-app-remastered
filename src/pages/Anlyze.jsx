@@ -39,7 +39,12 @@ const Header = styled.h1`
   colot:#222831;
 `
 const Button = styled.button`
-
+background-color:#393E46;
+color:#EEEEEE;
+border:none;
+border-radius:15px;
+font-size:14px;
+cursor: pointer;
 `
 
 const Anlyze = (CUId) => {
@@ -110,7 +115,7 @@ const Anlyze = (CUId) => {
                         <Th>User Name</Th>
                         <Th>Exam</Th>
                         <Th>Score</Th>
-                        <Th>cevaplarım</Th>
+                        <Th>Review</Th>
                     </Tr>
                     {examInfo.map((exam) => (
                         <Tr
@@ -118,7 +123,7 @@ const Anlyze = (CUId) => {
                             <Td>{exam.userInfo.username}</Td>
                             <Td>{exam.userInfo.examname}</Td>
                             <Td>{exam.grade}</Td>
-                            <Td><Link to={`/examreview/${id.id}`}><button>Click me</button></Link></Td>
+                            <Td><Link to={`/examreview/${id.id}`}><Button>Click me</Button></Link></Td>
                         </Tr>
                     ))}
                 </Table>

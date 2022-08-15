@@ -41,7 +41,7 @@ function App() {
         <Route path="/examreview/:id" element={<RequireAuth><ExamReview /></RequireAuth>} />
         <Route path="/create/:id" element={<RequireAuth><CreateQuiz /></RequireAuth>} />
         <Route path="/configure" element={<RequireAuth><Configure /></RequireAuth>} />
-        <Route path="/reports" element={<RequireAuth><Reports /></RequireAuth>} />
+        <Route path="/reports" element={<RequireAuth><Reports CUId={currentUserUid} /></RequireAuth>} />
         <Route path="/anlyze/:id" element={<RequireAuth><Anlyze CUId={currentUserUid} /></RequireAuth>} />
         <Route path="/quiz/:id" element={<RequireAuth><QuizController CUId={currentUserUid} /></RequireAuth>} />
         <Route path="/result/:id" element={<RequireAuth><Result /></RequireAuth>} />
