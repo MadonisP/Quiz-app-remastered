@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Footer from '../components/Footer'
 import LoginNavbar from '../components/LoginNavbar'
+import axios from 'axios'
+import { useParams,useNavigate } from 'react-router-dom'
 
 const Container = styled.div`
 width: 100%;
@@ -57,28 +59,72 @@ cursor: pointer;
 
 const Configure = () => {
 
+  const [myStartDatas, setMyStartDatas] = useState([]);
+  const [examName, setExamName] = useState("");
+  const [examGrade, setExamGrade] = useState(0);
+  const [examTime, setExamTime] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const navigate = useNavigate()
+
+  const params = useParams();
+  const id = params;
+
+  useEffect(() => {
+    getConfigureData();
+  }, [])
+
+  const getConfigureData = async () => {
+    await axios.get(`http://localhost:5000/exam/exam/` + id.id).then((response) => {
+      console.log(response.status);
+      setMyStartDatas(response.data);
+      setIsLoading(false);
+    })
+  }
+
+  const handleConfigure = (e) => {
+    e.preventDefault();
+    const exam = {
+      examname: examName,
+      time: examTime,
+      passGrade: examGrade,
+    };
+    axios.patch(`http://localhost:5000/exam/${id.id}`, exam).then((response) => {
+      console.log(response.status);
+      console.log(response.data);
+      navigate("/dashboard");
+    });
+  }
 
 
+  if (isLoading) {
+    return (
+      <>
+        <LoginNavbar />
+        <div style={{ verticalAlign: "middle", display: "flex", border: "16px solid #f3f3f3", borderRadius: "50%", borderTop: "16px solid #3498db", width: "120px", height: "120px", WebkitAnimation: "spin 2s linear infinite" }}></div>
+        <Footer />
+      </>)
+  }
   return (
     <>
       <LoginNavbar />
       <Container>
         <Wrapper>
-          <Form >
+          <Form onSubmit={handleConfigure}>
             <Section>
-              <Label for="quizName">Quiz Name</Label>
-              <Input type="text" name="quizName" value="deneme"  />{/*Name */}
+              <Label htmlFor="quizName">Quiz Name</Label>
+              <Input type="text" name="quizName" placeholder={`${myStartDatas[0].examname}`} onChange={e => setExamName(e.target.value)} />
             </Section>
             <Section>
-              <Label for="time">Time Limit</Label>
-              <Input type="number" name="time" placeholder='20 min by default' />{/*Time */}
+              <Label htmlFor="time">Time Limit</Label>
+              <Input type="number" name="time" placeholder={`${myStartDatas[0].time}`} onChange={e => setExamTime(e.target.value)} />
             </Section>
             <Section>
-              <Label for="grade">Pass Grade</Label>
-              <Input type="text" name="grade" placeholder='70 by default' />{/*Grade */}
+              <Label htmlFor="grade">Pass Grade</Label>
+              <Input type="text" name="grade" placeholder={`${myStartDatas[0].passGrade}`} onChange={e => setExamGrade(e.target.value)} />
             </Section>
             <Section>
-              <Button align="right" style={{ margin: "0px 400px 20px 20px" }}>Save</Button>
+              <Button type='submit' align="right" style={{ margin: "0px 400px 20px 20px" }}>Save</Button>
             </Section>
           </Form>
         </Wrapper>

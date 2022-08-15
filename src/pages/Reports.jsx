@@ -100,9 +100,7 @@ const Reports = (CUId) => {
             <Tr key={index}>
               <Td>{exam.examname}</Td>
               <Td><Link to={`/quiz/${exam._id}`}><Button>Go to exam</Button></Link></Td>
-              {userDatas.map((user) => (
-                <Td>{exam._id == user.examId ? (<span>{"Solved"}</span>) : (<span>{"Available"}</span>)}</Td>
-              ))}
+              <Td>{userDatas.findIndex(u=> u.examId === exam._id) > -1 ? (<span style={{border:"none",borderRadius:"10px",padding:"5px",backgroundColor:"#CC0000",color:"#EEEEEE",fontWeight:"500" }}>{"Solved"}</span>) : <span style={{border:"none",borderRadius:"10px",padding:"5px",backgroundColor:"#007E33",color:"#EEEEEE",fontWeight:"500" }}>{"Available"}</span>}</Td>
             </Tr>
           ))}
         </Table>

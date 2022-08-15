@@ -9,11 +9,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { ArrowForward, AddCircle, RemoveCircleOutline, ControlPointDuplicateSharp } from '@mui/icons-material';
+import { ArrowForward, AddCircle, RemoveCircleOutline } from '@mui/icons-material';
 import Popup from 'reactjs-popup';
 import { v4 as uuidv4 } from 'uuid';
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
+import { Link } from "react-router-dom";
 
 
 const Container = styled.table`
@@ -65,6 +66,7 @@ cursor: pointer;
     background-color: #75DB75;
   }
   `
+
 const CreateQuiz = () => {
 
     const params = useParams();
@@ -264,7 +266,7 @@ const CreateQuiz = () => {
                                     <TableCell></TableCell>
                                     <TableCell></TableCell>
                                     <TableCell></TableCell>
-                                    <TableCell align='right'><NextButton>Next<ArrowForward style={{ verticalAlign: "middle", transform: "scale(0.9)" }} /></NextButton></TableCell>
+                                    <TableCell align='right'><Link to={`/configure/${id.id}`}><NextButton>Next<ArrowForward style={{ verticalAlign: "middle", transform: "scale(0.9)" }} /></NextButton></Link></TableCell>
                                 </TableRow>
                             </TableHead>
                         </Table>

@@ -116,9 +116,9 @@ const ExamReview = () => {
                                         key={exam._id} >
                                         <TableCell component="th" scope="exam" style={{ color: "#222831", fontSize: "16px", fontWeight: "600", padding: "25px" }}>
                                             {exam.examReview.map((examR, indexi) => (<>
-                                                <Label><span style={{ color: "#4285F4" }}>{"Exam Name )  "}</span>{examR.qTitle}</Label>
+                                                <Label><span style={{ color: "#4285F4" }}>{"Question Title )  "}</span>{examR.qTitle}</Label>
                                                 <br /><Check type="radio" name={`${indexi + 1}`} />
-                                                <Label><span style={{ color: "#FF8800" }}>{"Your Answer ) "}</span> {examR.qAnswers}</Label>
+                                                <Label><span style={{ color: "#FF8800" }}>{"User Answer ) "}</span> {examR.qAnswers}</Label>
                                                 <br /><Check type="radio" name={`${indexi + 1}`} />
                                                 <Label><span style={{ color: "#007E33" }}>{"Correct Answer ) "}</span>{examR.qCorrect}</Label>
                                                 <br />
