@@ -12,6 +12,7 @@ import Anlyze from "./pages/Anlyze";
 import Reports from "./pages/Reports";
 import Help from "./pages/Help";
 import ExamReview from "./pages/ExamReview";
+import NotFound from "./pages/NotFound";
 
 
 
@@ -45,6 +46,7 @@ function App() {
         <Route path="/anlyze/:id" element={<RequireAuth><Anlyze CUId={currentUserUid} /></RequireAuth>} />
         <Route path="/quiz/:id" element={<RequireAuth><QuizController CUId={currentUserUid} /></RequireAuth>} />
         <Route path="/result/:id" element={<RequireAuth><Result /></RequireAuth>} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </div>
   );
